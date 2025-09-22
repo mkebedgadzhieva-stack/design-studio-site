@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
+import ContactUs from "./components/ContactUs";
 
 // --- THEME (редактируй эти значения под фирстиль) ---
 const THEME = {
@@ -14,9 +15,9 @@ const THEME = {
 
 // --- ДЕМО-КОНТЕНТ (замени на свои данные) ---
 const SERVICES = [
-  { id: "identity", title: "Фирменный стиль", price: 25000, desc: "Логотип, палитра, шрифты, базовые носители.", features: ["Логотип (3 концепции)", "Гайд на 8–12 стр.", "2 раунда правок"] },
-  { id: "brandkit", title: "Brand Kit Pro", price: 35000, desc: "Расширенный набор носителей + тональность бренда.", features: ["Гайд 20–30 стр.", "Посты/сторис шаблоны", "3 раунда правок"] },
-  { id: "premium", title: "Premium Identity", price: 50000, desc: "Полный бренд‑гайд, паттерны, упаковка.", features: ["Гайд 60+ стр.", "Печатные макеты", "Супровождение запуска"] },
+  { id: "identity", title: "Фирменный стиль", price: 30000, desc: "Логотип, палитра, шрифты, базовые носители.", features: ["Логотип (3 концепции)", "Гайд на 8–12 стр.", "2 раунда правок"] },
+  { id: "brandkit", title: "Brand Kit Pro", price: 45000, desc: "Расширенный набор носителей + тональность бренда.", features: ["Гайд 20–30 стр.", "Посты/сторис шаблоны", "3 раунда правок"] },
+  { id: "premium", title: "Premium Identity", price: 65000, desc: "Полный бренд‑гайд, паттерны, упаковка.", features: ["Гайд 60+ стр.", "Печатные макеты", "Супровождение запуска"] },
 ];
 
 const WORKS = [
@@ -353,16 +354,22 @@ export default function App() {
     <BrowserRouter>
       <Shell>
         <Routes>
-          <Route path="/" element={<Home/>} />
-          <Route path="/portfolio" element={<Portfolio/>} />
-          <Route path="/services" element={<Services/>} />
-          <Route path="/studio" element={<Studio/>} />
-          <Route path="/designers" element={<Designers/>} />
-          <Route path="/contact" element={<Contact/>} />
-          <Route path="/offer" element={<Offer/>} />
-          <Route path="/partners" element={<Partners/>} />
+          <Route path="/" element={<Home />} />
+          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/studio" element={<Studio />} />
+          <Route path="/designers" element={<Designers />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/offer" element={<Offer />} />
+          <Route path="/partners" element={<Partners />} />
         </Routes>
+
+        <ContactUs
+          whatsapp="79222817779"
+          telegram="themarrrr"
+        />
       </Shell>
     </BrowserRouter>
   );
 }
+
