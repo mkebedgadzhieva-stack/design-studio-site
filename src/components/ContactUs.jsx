@@ -12,14 +12,14 @@ export default function ContactUs({ whatsapp, telegram }) {
   return (
     <section id="contact" className="py-16">
       <div className="mx-auto w-full max-w-5xl px-4">
-        {/* Заголовок по центру */}
+        {/* Заголовок по центру — чуть меньше */}
         <div className="mb-6 text-center">
-          <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">
+          <h2 className="text-xl sm:text-2xl font-semibold tracking-tight">
             Связаться с нами
           </h2>
         </div>
 
-        {/* Иконки по центру */}
+        {/* Иконки по центру — кружки и пиктограммы в 2 раза меньше */}
         <div className="flex justify-center">
           <nav className="flex flex-wrap items-center justify-center gap-8 sm:gap-10">
             {/* WhatsApp */}
@@ -31,8 +31,8 @@ export default function ContactUs({ whatsapp, telegram }) {
               aria-label="Написать в WhatsApp"
               title="WhatsApp"
             >
-              <span className="grid place-items-center size-16 sm:size-18 rounded-full border border-black/60 transition group-hover:scale-105">
-                <img src="/icons/whatsapp.svg" alt="WhatsApp" className="w-10 h-10 sm:w-12 sm:h-12" />
+              <span className="grid place-items-center size-8 sm:size-9 rounded-full border border-black/60 transition group-hover:scale-105">
+                <img src="/icons/whatsapp.svg" alt="WhatsApp" className="w-5 h-5 sm:w-6 sm:h-6" />
               </span>
               <span className="text-xs">WhatsApp</span>
             </a>
@@ -46,8 +46,8 @@ export default function ContactUs({ whatsapp, telegram }) {
               aria-label="Написать в Telegram"
               title="Telegram"
             >
-              <span className="grid place-items-center size-16 sm:size-18 rounded-full border border-black/60 transition group-hover:scale-105">
-                <img src="/icons/telegram.svg" alt="Telegram" className="w-10 h-10 sm:w-12 sm:h-12" />
+              <span className="grid place-items-center size-8 sm:size-9 rounded-full border border-black/60 transition group-hover:scale-105">
+                <img src="/icons/telegram.svg" alt="Telegram" className="w-5 h-5 sm:w-6 sm:h-6" />
               </span>
               <span className="text-xs">Telegram</span>
             </a>
@@ -61,8 +61,8 @@ export default function ContactUs({ whatsapp, telegram }) {
               aria-label="Написать Email"
               title="Email"
             >
-              <span className="grid place-items-center size-16 sm:size-18 rounded-full border border-black/60 transition group-hover:scale-105">
-                <img src="/icons/email.svg" alt="Email" className="w-10 h-10 sm:w-12 sm:h-12" />
+              <span className="grid place-items-center size-8 sm:size-9 rounded-full border border-black/60 transition group-hover:scale-105">
+                <img src="/icons/email.svg" alt="Email" className="w-5 h-5 sm:w-6 sm:h-6" />
               </span>
               <span className="text-xs">Email</span>
             </a>
