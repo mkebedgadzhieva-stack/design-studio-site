@@ -3,18 +3,17 @@ export default function LogoService() {
     <section className="py-20">
       <div className="container mx-auto px-4">
         {/* Заголовок страницы */}
-        <h2 className="text-3xl md:text-4xl font-extrabold mb-12">
-          Тарифы «Логотип»
+        <h2 className="text-3xl md:text-4xl font-extrabold mb-12 text-center">
+          Логотип
         </h2>
 
-        {/* Карточки тарифов */}
+        {/* Карточки тарифов — стиль как на первом скрине */}
         <div className="grid md:grid-cols-3 gap-8">
           {/* Basic */}
-          <div className="p-6 border rounded-2xl shadow-sm">
-            <h3 className="text-2xl font-semibold mb-4">
-              Basic — 8 000 ₽
-            </h3>
-            <ul className="list-disc pl-5 space-y-2 text-[15px] leading-relaxed">
+          <div className="p-6 border rounded-2xl shadow-sm flex flex-col">
+            <h3 className="text-2xl font-semibold mb-1">Basic</h3>
+            <p className="text-lg font-bold mb-4">8 000 ₽</p>
+            <ul className="space-y-2 text-[15px] leading-relaxed flex-1">
               <li>2 концепции логотипа</li>
               <li>2 раунда правок</li>
               <li>Файлы: PNG, SVG, PDF</li>
@@ -29,14 +28,13 @@ export default function LogoService() {
           </div>
 
           {/* Pro */}
-          <div className="p-6 border rounded-2xl shadow-sm">
-            <h3 className="text-2xl font-semibold mb-4">
-              Pro — 12 000 ₽
-            </h3>
-            <ul className="list-disc pl-5 space-y-2 text-[15px] leading-relaxed">
+          <div className="p-6 border rounded-2xl shadow-sm flex flex-col">
+            <h3 className="text-2xl font-semibold mb-1">Pro</h3>
+            <p className="text-lg font-bold mb-4">12 000 ₽</p>
+            <ul className="space-y-2 text-[15px] leading-relaxed flex-1">
               <li>3 концепции логотипа</li>
               <li>4 раунда правок</li>
-              <li>Полный пакет файлов: PNG, SVG, PDF, по запросу EPS/AI</li>
+              <li>Полный пакет файлов: PNG, SVG, PDF (по запросу EPS/AI)</li>
               <li>Основная, инвертированная и монохромная версии</li>
               <li>Аватарки для соцсетей — 3–4 формата (круглая/квадратная, светлый/тёмный фон)</li>
               <li>Мини-гайд 6–8 стр. (палитра, шрифты, правила, примеры)</li>
@@ -49,11 +47,10 @@ export default function LogoService() {
           </div>
 
           {/* Premium */}
-          <div className="p-6 border rounded-2xl shadow-sm">
-            <h3 className="text-2xl font-semibold mb-4">
-              Premium — 20 000 ₽
-            </h3>
-            <ul className="list-disc pl-5 space-y-2 text-[15px] leading-relaxed">
+          <div className="p-6 border rounded-2xl shadow-sm flex flex-col">
+            <h3 className="text-2xl font-semibold mb-1">Premium</h3>
+            <p className="text-lg font-bold mb-4">20 000 ₽</p>
+            <ul className="space-y-2 text-[15px] leading-relaxed flex-1">
               <li>3–4 концепции логотипа</li>
               <li>Безлимит правок в течение 3 дней</li>
               <li>Полный пакет файлов (PNG, SVG, PDF, EPS/AI по запросу)</li>
