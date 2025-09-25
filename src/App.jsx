@@ -1,11 +1,24 @@
 /* App.jsx — сайт + кабинет. Store вместо раздела «Для дизайнеров» */
+import SmallFormats from "./pages/services/SmallFormats.jsx";
 import BrandingPackages from "./pages/services/BrandingPackages.jsx";
 import ServicesLayout from "./pages/services/ServicesLayout.jsx";
 import LogoService from "./pages/services/LogoService.jsx";
 import Services from "./pages/services/Services.jsx";
 import ServicesDropdown from "./components/ServicesDropdown.jsx";
+import PrintAds from "./pages/services/PrintAds.jsx";
+import Publishing from "./pages/services/Publishing.jsx";
+import Packaging from "./pages/services/Packaging.jsx";
+import Extras from "./pages/services/Extras.jsx";
 
-import { BrowserRouter, Routes, Route, Link, useLocation, Outlet } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  useLocation,
+  Outlet,
+  Navigate, // ← для редиректов
+} from "react-router-dom";
 import { useEffect } from "react";
 
 import AuthGate from "./features/auth/AuthGate.jsx";
@@ -73,21 +86,38 @@ function Section({ id, title, subtitle, children, className }) {
   );
 }
 
-function Card({ children, className }) { return <div className={classNames("border rounded-2xl p-4", className)}>{children}</div>; }
+function Card({ children, className }) {
+  return <div className={classNames("border rounded-2xl p-4", className)}>{children}</div>;
+}
 
 function Button({ children, to }) {
-  if (to) return <Link to={to} className="inline-flex items-center justify-center rounded-xl border px-4 py-2 hover:bg-gray-50">{children}</Link>;
-  return <button className="inline-flex items-center justify-center rounded-xl border px-4 py-2 hover:bg-gray-50">{children}</button>;
+  if (to) {
+    return (
+      <Link to={to} className="inline-flex items-center justify-center rounded-xl border px-4 py-2 hover:bg-gray-50">
+        {children}
+      </Link>
+    );
+  }
+  return (
+    <button className="inline-flex items-center justify-center rounded-xl border px-4 py-2 hover:bg-gray-50">
+      {children}
+    </button>
+  );
 }
 
 function Hero() {
   return (
     <section className="relative overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 py-24 md:py-32">
-        <h1 className="text-4xl md:text-6xl font-semibold tracking-tight" style={{ fontFamily: "var(--font-heading)", lineHeight: 1.05 }}>
+        <h1
+          className="text-4xl md:text-6xl font-semibold tracking-tight"
+          style={{ fontFamily: "var(--font-heading)", lineHeight: 1.05 }}
+        >
           Мы отбираем то, что заслуживает места <span className="whitespace-nowrap">на твоём столе</span>
         </h1>
-        <p className="mt-6 text-gray-600 max-w-2xl">Кураторская дизайн-студия: айдентика, упаковка, презентации и сайт-визитка.</p>
+        <p className="mt-6 text-gray-600 max-w-2xl">
+          Кураторская дизайн-студия: айдентика, упаковка, презентации и сайт-визитка.
+        </p>
         <div className="mt-8 flex gap-3">
           <Button to="/services">Пакеты услуг</Button>
           <Button to="/portfolio">Портфолио</Button>
@@ -141,14 +171,16 @@ function Shell({ children }) {
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-xl" style={{ background: "var(--accent)" }} />
-            <span className="font-semibold tracking-tight" style={{ fontFamily: "var(--font-heading)" }}>Mari Studio</span>
+            <span className="font-semibold tracking-tight" style={{ fontFamily: "var(--font-heading)" }}>
+              Mari Studio
+            </span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-6 text-sm">
             <Link to="/portfolio" className="hover:opacity-70">Портфолио</Link>
             <ServicesDropdown />
             <Link to="/studio" className="hover:opacity-70">О студии</Link>
-            <Link to="/store" className="hover:opacity-70">Store</Link> {/* ← заменили «Для дизайнеров» */}
+            <Link to="/store" className="hover:opacity-70">Store</Link>
             <Link to="/partners" className="hover:opacity-70">Партнёрская программа</Link>
             <Link to="/offer" className="hover:opacity-70">Публичная оферта</Link>
             <Link to="/cabinet" className="hover:opacity-70">Личный кабинет</Link>
@@ -203,19 +235,33 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         {/* Общая оболочка сайта */}
-        <Route element={<Shell><><Outlet /><ContactUs whatsapp="79222817779" telegram="themarrrr" /></></Shell>}>
+        <Route
+          element={
+            <Shell>
+              <>
+                <Outlet />
+                <ContactUs whatsapp="79222817779" telegram="themarrrr" />
+              </>
+            </Shell>
+          }
+        >
           <Route path="/" element={<Home />} />
           <Route path="/portfolio" element={<Portfolio />} />
 
           {/* Услуги */}
           <Route path="/services" element={<ServicesLayout />}>
-            <Route index element={<Services />} />
-            <Route path="logo" element={<LogoService />} />
-            <Route path="branding-packages" element={<BrandingPackages />} />
-          </Route>
+  <Route index element={<Services />} />
+  <Route path="logo" element={<LogoService />} />
+  <Route path="branding-packages" element={<BrandingPackages />} />
+  <Route path="small-formats" element={<SmallFormats />} />
+  <Route path="print-ads" element={<PrintAds />} />
+  <Route path="publishing" element={<Publishing />} />
+  <Route path="extras" element={<Extras />} />
+</Route>
+
 
           <Route path="/studio" element={<Studio />} />
-          <Route path="/store" element={<Store />} /> {/* ← новый раздел */}
+          <Route path="/store" element={<Store />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/offer" element={<Offer />} />
           <Route path="/partners" element={<Partners />} />
