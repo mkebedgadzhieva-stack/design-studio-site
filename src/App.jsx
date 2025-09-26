@@ -1,4 +1,3 @@
-/* App.jsx — сайт + кабинет. Store вместо раздела «Для дизайнеров» */
 import SmallFormats from "./pages/services/SmallFormats.jsx";
 import BrandingPackages from "./pages/services/BrandingPackages.jsx";
 import ServicesLayout from "./pages/services/ServicesLayout.jsx";
@@ -17,18 +16,22 @@ import {
   Link,
   useLocation,
   Outlet,
-  Navigate, // ← для редиректов
 } from "react-router-dom";
 import { useEffect } from "react";
 
 import AuthGate from "./features/auth/AuthGate.jsx";
 import AuthCallback from "./features/auth/AuthCallback.jsx";
 
+import CabinetLayout from "./cabinet/CabinetLayout.jsx";
+import PartnerDashboard from "./pages/cabinet/PartnerDashboard.jsx";
+import Commissions from "./pages/cabinet/Commissions.jsx";
+import Payouts from "./pages/cabinet/Payouts.jsx";
+
 import Project from "./pages/Project.jsx";
 import ContactUs from "./components/ContactUs";
-import Cabinet from "./pages/Cabinet.tsx";
+import Cabinet from "./pages/Cabinet.tsx"; // если не используешь — можешь удалить импорт
 import Offer from "./pages/Offer.jsx";
-import Store from "./pages/Store.jsx"; // ← новый раздел
+import Store from "./pages/Store.jsx";
 
 /* ---------------- THEME ---------------- */
 const THEME = {
@@ -234,7 +237,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Общая оболочка сайта */}
+        {/* ОБОЛОЧКА САЙТА (общая шапка + футер) */}
         <Route
           element={
             <Shell>
@@ -245,33 +248,41 @@ export default function App() {
             </Shell>
           }
         >
+          {/* публичные страницы */}
           <Route path="/" element={<Home />} />
           <Route path="/portfolio" element={<Portfolio />} />
-
-          {/* Услуги */}
           <Route path="/services" element={<ServicesLayout />}>
-  <Route index element={<Services />} />
-  <Route path="logo" element={<LogoService />} />
-  <Route path="branding-packages" element={<BrandingPackages />} />
-  <Route path="small-formats" element={<SmallFormats />} />
-  <Route path="print-ads" element={<PrintAds />} />
-  <Route path="publishing" element={<Publishing />} />
-  <Route path="extras" element={<Extras />} />
-</Route>
-
-
+            <Route index element={<Services />} />
+            <Route path="logo" element={<LogoService />} />
+            <Route path="branding-packages" element={<BrandingPackages />} />
+            <Route path="small-formats" element={<SmallFormats />} />
+            <Route path="print-ads" element={<PrintAds />} />
+            <Route path="publishing" element={<Publishing />} />
+            <Route path="extras" element={<Extras />} />
+          </Route>
           <Route path="/studio" element={<Studio />} />
           <Route path="/store" element={<Store />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/offer" element={<Offer />} />
           <Route path="/partners" element={<Partners />} />
 
-          {/* кабинет */}
-          <Route path="/cabinet" element={<AuthGate><Cabinet /></AuthGate>} />
-          <Route path="/cabinet/projects/:id" element={<AuthGate><Project /></AuthGate>} />
+          {/* КАБИНЕТ внутри оболочки сайта */}
+          <Route
+            path="/cabinet"
+            element={
+              <AuthGate>
+                <CabinetLayout />
+              </AuthGate>
+            }
+          >
+            <Route index element={<PartnerDashboard />} />
+            <Route path="commissions" element={<Commissions />} />
+            <Route path="payouts" element={<Payouts />} />
+            <Route path="projects/:id" element={<Project />} />
+          </Route>
         </Route>
 
-        {/* oauth callback */}
+        {/* OAuth callback (может быть снаружи оболочки) */}
         <Route path="/auth/callback" element={<AuthCallback />} />
       </Routes>
     </BrowserRouter>
