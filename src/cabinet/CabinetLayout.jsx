@@ -35,6 +35,12 @@ export default function CabinetLayout() {
           <NavLink to="/cabinet/payouts" className={({ isActive }) => link(isActive)}>
             Выплаты
           </NavLink>
+<NavLink to="/cabinet/projects" className={({ isActive }) => link(isActive)}>
+  Проекты
+</NavLink>
+<NavLink to="/cabinet/planner" className={({ isActive }) => link(isActive)}>
+  Планер
+</NavLink>
         </nav>
 
         <div style={{ marginLeft: "auto" }} />

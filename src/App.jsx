@@ -8,6 +8,8 @@ import PrintAds from "./pages/services/PrintAds.jsx";
 import Publishing from "./pages/services/Publishing.jsx";
 import Packaging from "./pages/services/Packaging.jsx";
 import Extras from "./pages/services/Extras.jsx";
+import ProjectsAdmin from "./pages/cabinet/ProjectsAdmin.jsx";
+import PlannerBoard from "./pages/cabinet/PlannerBoard.jsx";
 
 import {
   BrowserRouter,
@@ -169,7 +171,7 @@ function Shell({ children }) {
   useThemeVars();
   useReferralCapture();
   return (
-    <div className="min-h-screen bg-white text-gray-900" style={{ fontFamily: "var(--font-body)" }}>
+    <div className="min-h-screen text-gray-900" style={{ fontFamily: "var(--font-body)" }}>
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
@@ -278,7 +280,9 @@ export default function App() {
             <Route index element={<PartnerDashboard />} />
             <Route path="commissions" element={<Commissions />} />
             <Route path="payouts" element={<Payouts />} />
+<Route path="projects" element={<ProjectsAdmin />} />
             <Route path="projects/:id" element={<Project />} />
+<Route path="planner" element={<PlannerBoard />} />
           </Route>
         </Route>
 
