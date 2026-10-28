@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "mode": "autopilot",
+  "paused": false,
+  "integration_branch": "claude/studio-autopilot",
+  "repository": "mkebedgadzhieva-stack/design-studio-site",
+  "base_sha": "7fe9ae15da804c6f0d665ee036462db334f97d67",
+  "last_verified_sha": "7fe9ae15da804c6f0d665ee036462db334f97d67",
+  "last_verified_note": "Проверки запуска 2026-10-28 выполнены на рабочем дереве, которое зафиксировано коммитом, изменившим этот файл (первый коммит после base_sha с сообщением «Autopilot: …»). Следующий запуск: если HEAD — этот коммит и дерево чистое, считать его проверенным и записать его SHA сюда.",
+  "active_task": null,
+  "completed": ["FIX-01"],
+  "in_review": ["MOTION-02"],
+  "blocked": ["MOTION-01", "UX-02", "CNT-01", "FIX-05"],
+  "pending_checks": [
+    "MOTION-02: подключить остальные критичные запросы кабинета и lazy-чанки, повторить QA",
+    "Контрольный запуск в режиме dontAsk после включения разрешений (BLOCKERS B-001)",
+    "Первый запуск облачного расписания — проверить результат в истории сессий"
+  ],
+  "next_step": "FIX-02 (имя пользователя в меню кабинета), затем REL-01 (CI без деплоя) и MOTION-03 (полоса у футера со статичным вариантом).",
+  "limits": {
+    "MAX_CONCURRENT_AGENTS": 2,
+    "MAX_TASKS_PER_RUN": 3,
+    "MAX_REPAIR_ATTEMPTS_PER_TASK": 2,
+    "TARGET_RUN_MINUTES": 45
+  },
+  "schedule": {
+    "mechanism": "none-confirmed",
+    "details": "см. RUNBOOK.md, раздел «Расписание»"
+  },
+  "last_run": {
+    "date": "2026-10-28",
+    "kind": "first-run (ручной, облачная сессия)",
+    "tasks": ["FIX-01", "MOTION-01 (частично)", "MOTION-02 (механизм)"],
+    "checks": "lint 0 ошибок; npm test 7/7; build ок; браузер 18/18"
+  }
+}

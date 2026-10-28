@@ -1,0 +1,42 @@
+{
+  "_note": "ПРЕДЛОЖЕНИЕ, не активно. Чтобы включить — скопировать блок permissions в .claude/settings.json (см. RUNBOOK.md, «Разрешения»). Запись .claude/settings.json из облачной сессии 28.10.2026 заблокирована классификатором разрешений.",
+  "permissions": {
+    "allow": [
+      "Read(./**)",
+      "Edit(./**)",
+      "Write(./**)",
+      "Glob",
+      "Grep",
+      "Bash(npm ci)",
+      "Bash(npm run lint)",
+      "Bash(npm test)",
+      "Bash(npm run build)",
+      "Bash(python3 -I tools/motion/extract_reference.py)",
+      "Bash(git status)",
+      "Bash(git status *)",
+      "Bash(git diff)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git show *)",
+      "Bash(git rev-parse *)",
+      "Bash(git fetch origin claude/studio-autopilot)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push -u origin claude/studio-autopilot)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Bash(git push * main*)",
+      "Bash(git reset --hard *)",
+      "mcp__Supabase__apply_migration",
+      "mcp__Supabase__execute_sql",
+      "mcp__Supabase__merge_branch",
+      "mcp__Supabase__reset_branch",
+      "mcp__Supabase__deploy_edge_function",
+      "mcp__Supabase__create_edge_function_secret"
+    ]
+  }
+}

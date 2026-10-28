@@ -1,13 +1,13 @@
 # Статус проекта PAN TERRA
 
-_Обновлено: 19.10.2026. Ветка `feature/planner-delete`._
+_Обновлено: 28.10.2026. Ветка `claude/studio-autopilot`. Актуальная очередь задач — `docs/autopilot/BACKLOG.md`, последний отчёт — `docs/autopilot/REPORT.md`._
 
 ## Текущее состояние (проверено)
 - `npm run build` — **проходит**. Предупреждение: большой JS-бандл (~830 КБ), не блокирует.
 - `npm run dev` — сайт открывается на http://localhost:5173 (настройка запуска для Claude: `.claude/launch.json`).
 - Открываются без ошибок: `/`, `/portfolio`, `/services`, `/services/logo` и другие страницы услуг, `/studio`, `/contact`, `/store`, `/offer`, `/partners`, `/cabinet` (форма входа).
 - Мобильная версия (375 px): горизонтальной прокрутки нет, вёрстка услуг и входа в кабинет читается.
-- `npm run lint` — 2 ошибки (неиспользуемые переменные), 1 предупреждение; на работу сайта не влияют.
+- `npm run lint` — без ошибок и предупреждений (исправлено 28.10.2026). `npm test` — 7/7.
 
 ## Обнаруженные проблемы
 ### Блокирующие
@@ -33,10 +33,17 @@ _Обновлено: 19.10.2026. Ветка `feature/planner-delete`._
 - Мусорные пустые файлы в корне репозитория: `{`, `{}`, `setEmail(e.target.value)}`, `setPassword(e.target.value)}`.
 - Дубли старых файлов `.tsx/.ts` (`AuthGate.tsx`, `ContactUs.tsx`, `Cabinet.tsx`, `supabase.ts`); `Cabinet.tsx` импортируется в `App.jsx`, но не используется.
 
-## Незафиксированные изменения Марьям (до начала сессии, не трогать без согласования)
+## Изменения Марьям (зафиксированы в коммите `7fe9ae1` от 29.10.2026)
 `src/App.jsx`, `src/cabinet/CabinetLayout.jsx`, `src/components/ProjectModal.jsx`, `src/features/auth/AuthGate.jsx`, `src/pages/cabinet/ProjectsAdmin.jsx`, удалён `public/textures/paper.jpg`, новые `public/logo.svg`, `src/pages/cabinet/ClientDashboard.jsx`.
 
 ## Изменения, внесённые Claude
+28.10.2026 (первый запуск автопилота):
+- Конфигурация команды: 10 агентов `.claude/agents/`, 10 команд `.claude/skills/studio-*`, память `docs/autopilot/`, спецификация и QA анимаций `docs/motion/`, дополнен `CLAUDE.md`.
+- FIX-01: линтер — убран неиспользуемый код (`isHeaderVisible` в `src/App.jsx`, `useMemo` в `ProjectsAdmin.jsx`), загрузка в `PlannerBoard.jsx` перенесена в эффект с отменой устаревшего ответа.
+- MOTION-02 (механизм): `src/motion/` — порог 500 мс, загрузчик-мяч; подключён к `AuthGate` и `CabinetLayout` (плюс ошибка и «Повторить»); CSS-загрузчик в `index.html`; `index.html`: `lang="ru"`, заголовок «PAN TERRA — Design Studio»; превью `/dev/motion` (только dev); `npm test`.
+- MOTION-01 (частично): чистая пантера из референса — `public/motion/panther-walk-static.svg`, скрипт `tools/motion/extract_reference.py`.
+- Предложение разрешений `docs/autopilot/proposed-settings.json` (не активно — см. `docs/autopilot/BLOCKERS.md`).
+
 19.10.2026:
 - `src/App.jsx` (поверх правок Марьям, точечно):
   - добавлен маршрут `/services/packaging` (страница «Упаковка» уже существовала, но не была подключена);

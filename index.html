@@ -1,13 +1,31 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
+    <title>PAN TERRA — Design Studio</title>
+    <style>
+      /* Загрузчик до старта React (docs/motion/SPEC.md, «Первое открытие»).
+         Появляется только если бандл грузится дольше 500 мс; React заменяет
+         содержимое #root при первом рендере. */
+      .pt-boot { min-height: 60vh; display: grid; place-content: center; justify-items: center; gap: 16px;
+        font: 13px/1.4 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color: #77716b;
+        opacity: 0; animation: pt-boot-in 180ms ease-out 500ms forwards; }
+      .pt-boot__ball { width: 22px; height: 22px; border-radius: 50%;
+        background: radial-gradient(circle at 38% 32%, #ff3b44 0, #e31924 55%, #9e0f17 100%);
+        animation: pt-boot-toss 1100ms cubic-bezier(.33,0,.67,1) 500ms infinite; }
+      @keyframes pt-boot-in { to { opacity: 1; } }
+      @keyframes pt-boot-toss { 0%, 100% { transform: translateY(0) scale(1.08, .92); }
+        45%, 55% { transform: translateY(-40px); } }
+      @media (prefers-reduced-motion: reduce) { .pt-boot__ball { animation: none; } }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="pt-boot" role="status"><span class="pt-boot__ball" aria-hidden="true"></span>Загружаем PAN TERRA…</div>
+    </div>
+    <noscript>Для работы сайта PAN TERRA включите JavaScript.</noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

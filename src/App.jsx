@@ -20,7 +20,7 @@ import {
   useLocation,
   Outlet,
 } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 
 import AuthGate from "./features/auth/AuthGate.jsx";
 import AuthCallback from "./features/auth/AuthCallback.jsx";
@@ -36,6 +36,11 @@ import ContactUs from "./components/ContactUs";
 import Cabinet from "./pages/Cabinet.tsx"; // если не используешь — можешь удалить импорт
 import Offer from "./pages/Offer.jsx";
 import Store from "./pages/Store.jsx";
+
+// Превью анимаций — только в режиме разработки, в production-сборку не попадает.
+const MotionPreview = import.meta.env.DEV
+  ? lazy(() => import("./dev/MotionPreview.jsx"))
+  : null;
 
 /* ---------------- THEME ---------------- */
 const THEME = {
@@ -206,41 +211,6 @@ useEffect(() => {
     window.removeEventListener("resize", checkHeader);
   };
 }, [location.pathname]);
-
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
-  const lastScrollY = useRef(0);
-
-  useEffect(() => {
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (ticking) return;
-
-      ticking = true;
-
-      window.requestAnimationFrame(() => {
-        const currentScrollY = window.scrollY;
-        const difference = currentScrollY - lastScrollY.current;
-
-        if (currentScrollY <= 10) {
-          setIsHeaderVisible(true);
-        } else if (difference > 6) {
-          setIsHeaderVisible(false);
-        } else if (difference < -6) {
-          setIsHeaderVisible(true);
-        }
-
-        lastScrollY.current = currentScrollY;
-        ticking = false;
-      });
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
 
   return (
     <div className="min-h-screen text-gray-900" style={{ fontFamily: "var(--font-body)" }}>
@@ -550,6 +520,17 @@ export default function App() {
             <Route path="projects/:id" element={<Project />} />
 <Route path="planner" element={<PlannerBoard />} />
           </Route>
+
+          {MotionPreview && (
+            <Route
+              path="/dev/motion"
+              element={
+                <Suspense fallback={null}>
+                  <MotionPreview />
+                </Suspense>
+              }
+            />
+          )}
 
           <Route path="*" element={<NotFound />} />
         </Route>

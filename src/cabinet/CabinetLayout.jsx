@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { supabase } from "../lib/supabase";
+import PantherLoader from "../motion/PantherLoader.jsx";
+import { useDelayedPending } from "../motion/useDelayedPending.js";
 
 const RED = "#E31924";
 const PAPER = "#FAF9F6";
@@ -131,6 +133,9 @@ export default function CabinetLayout() {
 
   const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
+  const [attempt, setAttempt] = useState(0);
+  const showLoader = useDelayedPending(loading);
 
   const [hovered, setHovered] = useState(false);
   const [pinned, setPinned] = useState(false);
@@ -141,34 +146,45 @@ export default function CabinetLayout() {
     let mounted = true;
 
     async function loadRole() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      setLoading(true);
+      setLoadError(false);
 
-      if (!mounted) return;
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
 
-      if (!user) {
+        if (!mounted) return;
+
+        if (!user) {
+          setRole(null);
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", user.id)
+          .single();
+
+        if (!mounted) return;
+
+        if (error) {
+          console.error("Не удалось загрузить роль пользователя:", error);
+          setRole(null);
+          // PGRST116 — профиль не найден: это не сбой сети, повтор не поможет.
+          setLoadError(error.code !== "PGRST116");
+        } else {
+          setRole(data?.role || null);
+        }
+      } catch (error) {
+        if (!mounted) return;
+        console.error("Не удалось загрузить кабинет:", error);
         setRole(null);
-        setLoading(false);
-        return;
+        setLoadError(true);
+      } finally {
+        if (mounted) setLoading(false);
       }
-
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", user.id)
-        .single();
-
-      if (!mounted) return;
-
-      if (error) {
-        console.error("Не удалось загрузить роль пользователя:", error);
-        setRole(null);
-      } else {
-        setRole(data?.role || null);
-      }
-
-      setLoading(false);
     }
 
     loadRole();
@@ -176,7 +192,7 @@ export default function CabinetLayout() {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [attempt]);
 
   const menuItems = role ? MENUS[role] || [] : [];
 
@@ -582,6 +598,7 @@ export default function CabinetLayout() {
 
       <main
         className="pt-cabinet-main"
+        aria-busy={loading}
         style={{
           maxWidth: 1180,
           margin: "0 auto",
@@ -593,15 +610,42 @@ export default function CabinetLayout() {
         }}
       >
         {loading ? (
-          <div
-            style={{
-              paddingTop: 40,
-              fontSize: 13,
-              color: MUTED,
-            }}
-          >
-            Загружаем кабинет…
-          </div>
+          showLoader ? <PantherLoader label="Загружаем кабинет…" /> : null
+        ) : loadError ? (
+          <section style={{ paddingTop: 40 }} role="alert">
+            <h1
+              style={{
+                margin: "0 0 12px",
+                fontSize: 28,
+                lineHeight: 1.1,
+                letterSpacing: "-0.03em",
+                fontWeight: 500,
+              }}
+            >
+              Не получилось загрузить кабинет
+            </h1>
+
+            <p style={{ maxWidth: 500, color: "#77716B", fontSize: 14, lineHeight: 1.7 }}>
+              Проверьте подключение к интернету и попробуйте ещё раз.
+            </p>
+
+            <button
+              type="button"
+              onClick={() => setAttempt((value) => value + 1)}
+              style={{
+                marginTop: 16,
+                padding: "10px 18px",
+                border: `1px solid ${RED}`,
+                borderRadius: 12,
+                background: "transparent",
+                color: RED,
+                fontSize: 14,
+                cursor: "pointer",
+              }}
+            >
+              Повторить
+            </button>
+          </section>
         ) : !role ? (
           <div
             style={{

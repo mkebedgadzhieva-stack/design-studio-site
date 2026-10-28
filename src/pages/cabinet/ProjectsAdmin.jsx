@@ -1,5 +1,5 @@
 // src/pages/cabinet/ProjectsAdmin.jsx
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 import { INTERNAL_STATUSES, EXTERNAL_STATUSES } from "../../data/statuses";
 const PROJECT_STAGES = [

@@ -1,0 +1,79 @@
+/* Параметры движения — docs/motion/SPEC.md, «Сцена A / резервный вариант». */
+.pt-loader {
+  --pt-red: #e31924;
+  --pt-toss: 1100ms;
+
+  min-height: 40vh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 18px;
+  animation: pt-loader-in 180ms ease-out both;
+}
+
+.pt-loader__scene {
+  position: relative;
+  width: 64px;
+  height: 72px;
+}
+
+.pt-loader__ball {
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  width: 22px;
+  height: 22px;
+  margin-left: -11px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #ff3b44 0, var(--pt-red) 55%, #9e0f17 100%);
+  transform-origin: 50% 100%;
+  animation: pt-loader-toss var(--pt-toss) cubic-bezier(.33, 0, .67, 1) infinite;
+  will-change: transform;
+}
+
+.pt-loader__shadow {
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  width: 26px;
+  height: 5px;
+  margin-left: -13px;
+  border-radius: 50%;
+  background: rgba(23, 23, 23, 0.16);
+  animation: pt-loader-shadow var(--pt-toss) cubic-bezier(.33, 0, .67, 1) infinite;
+}
+
+.pt-loader__label {
+  margin: 0;
+  font-size: 13px;
+  color: #77716b;
+}
+
+/* Короткая дуга с ощущением веса: быстрый уход вверх, замедление в верхней
+   точке, разгон вниз и небольшое сжатие в момент «поимки». */
+@keyframes pt-loader-toss {
+  0%   { transform: translate(0, 0) scale(1.08, 0.92); }
+  12%  { transform: translate(-2px, -14px) scale(0.96, 1.04); }
+  45%  { transform: translate(-6px, -44px) scale(1, 1); }
+  55%  { transform: translate(-6px, -44px) scale(1, 1); }
+  88%  { transform: translate(-1px, -12px) scale(0.97, 1.03); }
+  100% { transform: translate(0, 0) scale(1.08, 0.92); }
+}
+
+@keyframes pt-loader-shadow {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(0.55); opacity: 0.45; }
+}
+
+@keyframes pt-loader-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pt-loader,
+  .pt-loader__ball,
+  .pt-loader__shadow {
+    animation: none;
+  }
+}

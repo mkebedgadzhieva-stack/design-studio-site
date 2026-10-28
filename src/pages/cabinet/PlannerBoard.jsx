@@ -25,12 +25,15 @@ export default function PlannerBoard() {
     setMe(user || null);
   })(); }, []);
 
-  async function load() {
+  useEffect(() => {
     if (!me) return;
-    const { data, error } = await supabase.from("projects").select("*").eq("owner_id", me.id).order("created_at", { ascending: false });
-    if (!error) setRows(data || []);
-  }
-  useEffect(() => { load(); }, [me]);
+    let active = true;
+    (async () => {
+      const { data, error } = await supabase.from("projects").select("*").eq("owner_id", me.id).order("created_at", { ascending: false });
+      if (active && !error) setRows(data || []);
+    })();
+    return () => { active = false; };
+  }, [me]);
 
   const filtered = useMemo(() => {
     if (!rows) return null;

@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 import TwoStepSignup from "./TwoStepSignup.jsx";
 import { loginWithGoogle } from "./googleLogin";
+import PantherLoader from "../../motion/PantherLoader.jsx";
+import { useDelayedPending } from "../../motion/useDelayedPending.js";
 
 const RED = "#E31924";
 
@@ -300,6 +302,7 @@ export default function AuthGate({ children }) {
 
   const [portal, setPortal] = useState("client");
   const [tab, setTab] = useState("signin");
+  const showLoader = useDelayedPending(!initialized);
 
   useEffect(() => {
     let mounted = true;
@@ -357,17 +360,10 @@ export default function AuthGate({ children }) {
   }, []);
 
   if (!initialized) {
+    // Пока сессия проверяется — пустое место; загрузчик только после порога.
     return (
-      <div
-        style={{
-          minHeight: "55vh",
-          display: "grid",
-          placeItems: "center",
-          fontSize: 13,
-          color: "#777",
-        }}
-      >
-        Загружаем кабинет…
+      <div aria-busy="true" style={{ minHeight: "55vh" }}>
+        {showLoader && <PantherLoader label="Загружаем кабинет…" />}
       </div>
     );
   }

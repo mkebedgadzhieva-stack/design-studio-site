@@ -12,6 +12,7 @@
 - `npm run dev` — локальный сайт, http://localhost:5173
 - `npm run build` — проверка сборки (должна проходить без ошибок)
 - `npm run lint` — ESLint
+- `npm test` — модульные тесты (`node:test`, файлы `src/**/*.test.js`)
 
 ## Структура
 - `src/App.jsx` — оболочка сайта (Shell: шапка/футер), главная и простые страницы, все маршруты.
@@ -19,6 +20,8 @@
 - `src/features/auth/*` — вход (AuthGate: «Студия» / «Заказчик / партнёр»), Google OAuth, `/auth/callback`.
 - `src/cabinet/CabinetLayout.jsx` — кабинет: боковое меню по роли из `profiles.role` (admin / employee / client / partner).
 - `src/pages/cabinet/*` — разделы кабинета; `src/ROUTES.md` — карта маршрутов и QA-чеклист.
+- `src/motion/*` — загрузчик (`useDelayedPending`, порог 500 мс; `PantherLoader`); `src/dev/MotionPreview.jsx` — превью `/dev/motion` (только dev).
+- `tools/motion/`, `assets-src/motion/`, `public/motion/` — ассеты пантеры и скрипт их извлечения из референса.
 
 ## Визуальные правила
 - Выразительно и лаконично; главная не перегружена.
@@ -33,3 +36,14 @@
 - Свои изменения отмечать в PROJECT_STATUS.md (раздел «Изменения»).
 - Отделять проверенное (сборка, браузер) от предположений.
 - Коммиты и пуш — только по просьбе Марьям.
+
+## Автопилот (команда агентов)
+- **Память проекта:** `docs/autopilot/` — `BRIEF.md` (цели и факты), `BACKLOG.md` (очередь с ID), `STATE.json` (пауза, ветка, проверенный SHA, активная задача), `DECISIONS.md`, `BLOCKERS.md`, `REPORT.md` (последний отчёт), `RUNBOOK.md` (запуск, пауза, расписание, восстановление). Анимации — `docs/motion/SPEC.md`, `docs/motion/QA.md`.
+- **Каждый запуск:** сначала `STATE.json` + фактический `git log`/`git status`; при расхождении — восстановить факты. После каждой законченной задачи — обновить BACKLOG/STATE/REPORT.
+- **Координатор** — основная сессия: выбирает задачи, передаёт специалистам (ID, цель, критерии, базовый SHA, разрешённые файлы), сам интегрирует, проверяет и коммитит. Не больше 2 специалистов одновременно, до 3 задач за запуск, до 2 попыток исправления.
+- **Специалисты** (`.claude/agents/`): product-designer, web-engineer, mobile-engineer, backend-engineer, qa-engineer, security-reviewer, release-engineer, motion-designer, character-animator, motion-engineer.
+- **Команды** (`.claude/skills/`): `/studio-audit`, `/studio-auto`, `/studio-next`, `/studio-status`, `/studio-mobile`, `/studio-motion`, `/studio-review`, `/studio-release`, `/studio-pause`, `/studio-resume` (последние две — только Марьям).
+- **Самостоятельно можно:** анализ, очередь, небольшие правки сайта/приложения, тесты, исправление багов, локальные миграции (без применения к рабочей БД), сборка, документация, commit и обычный push в `claude/studio-autopilot`.
+- **Только по прямому решению Марьям:** публикация (домен, магазины), merge в `main`, рабочая БД и права реальных пользователей, платежи, тарифы и юридические тексты, платные ресурсы, удаление пользовательских данных, крупный редизайн. Без force push. Секреты и `.env*` не коммитить.
+- Это правило дополняет «Коммиты и пуш — только по просьбе Марьям»: Марьям поручила автопилоту коммиты и push в `claude/studio-autopilot` (задание 29.10.2026); в другие ветки — только по её просьбе.
+- **Проверки без рабочей базы:** dev-сервер с `VITE_SUPABASE_URL=http://127.0.0.1:54321` и перехватом сети в Playwright (Chromium предустановлен в облаке).
