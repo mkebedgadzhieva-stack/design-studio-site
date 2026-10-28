@@ -1,83 +1,295 @@
-// src/features/auth/AuthGate.jsx
 import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 import TwoStepSignup from "./TwoStepSignup.jsx";
 import { loginWithGoogle } from "./googleLogin";
+
+const RED = "#E31924";
+
+function PortalButton({ active, onClick, title, subtitle }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      style={{
+        flex: 1,
+        padding: "16px 18px",
+        border: active
+          ? `1px solid ${RED}`
+          : "1px solid #E5E5E5",
+        background: active
+          ? "rgba(227, 25, 36, 0.035)"
+          : "#fff",
+        borderRadius: 14,
+        cursor: "pointer",
+        textAlign: "left",
+        transition: "all 180ms ease",
+      }}
+    >
+      <div
+        style={{
+          fontSize: 14,
+          fontWeight: 600,
+          color: active ? RED : "#171717",
+        }}
+      >
+        {title}
+      </div>
+
+      <div
+        style={{
+          marginTop: 5,
+          fontSize: 11,
+          lineHeight: 1.4,
+          color: "#8A8A8A",
+        }}
+      >
+        {subtitle}
+      </div>
+    </button>
+  );
+}
 
 function TabButton({ active, onClick, children }) {
   return (
     <button
       onClick={onClick}
-      className={
-        "w-1/2 px-4 py-2 rounded-xl border text-sm " +
-        (active ? "bg-gray-100 font-medium" : "hover:bg-gray-50")
-      }
       type="button"
+      style={{
+        flex: 1,
+        padding: "10px 14px",
+        border: "none",
+        borderBottom: active
+          ? `1px solid ${RED}`
+          : "1px solid #E7E7E7",
+        background: "transparent",
+        color: active ? RED : "#777",
+        fontSize: 13,
+        fontWeight: active ? 600 : 500,
+        cursor: "pointer",
+      }}
     >
       {children}
     </button>
   );
 }
 
-function SignInForm() {
+function SignInForm({ portal }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const onEmailPasswordSignIn = async (e) => {
     e.preventDefault();
+
     setError("");
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    const {
+      data: authData,
+      error: authError,
+    } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (authError) {
+      setLoading(false);
+      setError(authError.message);
+      return;
+    }
+
+    const user = authData?.user;
+
+    if (!user) {
+      setLoading(false);
+      setError("Не удалось определить пользователя.");
+      return;
+    }
+
+    const {
+      data: profile,
+      error: profileError,
+    } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+
+    if (profileError || !profile?.role) {
+      await supabase.auth.signOut();
+
+      setLoading(false);
+      setError("Не удалось определить тип вашего аккаунта.");
+      return;
+    }
+
+    const studioRoles = ["admin", "employee"];
+    const clientRoles = ["client", "partner"];
+
+    const allowed =
+      portal === "studio"
+        ? studioRoles.includes(profile.role)
+        : clientRoles.includes(profile.role);
+
+    if (!allowed) {
+      await supabase.auth.signOut();
+
+      setLoading(false);
+
+      if (portal === "studio") {
+        setError(
+          "Этот аккаунт не относится к команде PAN TERRA. Выберите вход «Заказчик / партнёр»."
+        );
+      } else {
+        setError(
+          "Этот аккаунт относится к команде PAN TERRA. Выберите вход «Студия»."
+        );
+      }
+
+      return;
+    }
+
     setLoading(false);
-    if (error) return setError(error.message);
-    // Сразу в кабинет
-    navigate("/cabinet", { replace: true });
+
+    navigate("/cabinet", {
+      replace: true,
+    });
   };
 
   return (
-    <form className="space-y-3" onSubmit={onEmailPasswordSignIn}>
+    <form
+      onSubmit={onEmailPasswordSignIn}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 12,
+      }}
+    >
       <input
         type="email"
-        placeholder="you@example.com"
-        className="w-full rounded-xl border px-3 py-2"
+        placeholder="E-mail"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         autoComplete="email"
+        required
+        style={{
+          width: "100%",
+          padding: "13px 14px",
+          border: "1px solid #E3E3E3",
+          borderRadius: 12,
+          outline: "none",
+          fontSize: 14,
+        }}
       />
+
       <input
         type="password"
         placeholder="Пароль"
-        className="w-full rounded-xl border px-3 py-2"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         autoComplete="current-password"
+        required
+        style={{
+          width: "100%",
+          padding: "13px 14px",
+          border: "1px solid #E3E3E3",
+          borderRadius: 12,
+          outline: "none",
+          fontSize: 14,
+        }}
       />
-      {error && <div className="text-sm text-red-600">{error}</div>}
+
+      {error && (
+        <div
+          style={{
+            fontSize: 12,
+            lineHeight: 1.5,
+            color: RED,
+          }}
+        >
+          {error}
+        </div>
+      )}
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-xl border px-3 py-2 hover:bg-gray-50 disabled:opacity-60"
+        style={{
+          width: "100%",
+          padding: "13px 16px",
+          marginTop: 2,
+          border: `1px solid ${RED}`,
+          borderRadius: 12,
+          background: RED,
+          color: "#fff",
+          fontSize: 13,
+          fontWeight: 600,
+          cursor: loading ? "default" : "pointer",
+          opacity: loading ? 0.65 : 1,
+        }}
       >
-        {loading ? "Входим…" : "Войти"}
+        {loading
+          ? "Входим…"
+          : portal === "studio"
+          ? "Войти в кабинет студии"
+          : "Войти в кабинет"}
       </button>
 
-      <div className="relative text-center text-xs text-gray-500 my-3">
-        <span className="bg-white px-2 relative z-10">или</span>
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-px bg-gray-200" />
-      </div>
+      {portal === "client" && (
+        <>
+          <div
+            style={{
+              position: "relative",
+              margin: "7px 0",
+              textAlign: "center",
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                left: 0,
+                right: 0,
+                top: "50%",
+                height: 1,
+                background: "#ECECEC",
+              }}
+            />
 
-      <button
-        type="button"
-        onClick={loginWithGoogle}
-        className="w-full rounded-xl border px-3 py-2 hover:bg-gray-50"
-      >
-        Продолжить с Google
-      </button>
+            <span
+              style={{
+                position: "relative",
+                padding: "0 10px",
+                background: "#fff",
+                color: "#999",
+                fontSize: 10,
+              }}
+            >
+              ИЛИ
+            </span>
+          </div>
+
+          <button
+            type="button"
+            onClick={loginWithGoogle}
+            style={{
+              width: "100%",
+              padding: "12px 16px",
+              border: "1px solid #E3E3E3",
+              borderRadius: 12,
+              background: "#fff",
+              color: "#222",
+              fontSize: 13,
+              cursor: "pointer",
+            }}
+          >
+            Продолжить с Google
+          </button>
+        </>
+      )}
     </form>
   );
 }
@@ -85,66 +297,222 @@ function SignInForm() {
 export default function AuthGate({ children }) {
   const [initialized, setInitialized] = useState(false);
   const [session, setSession] = useState(null);
+
+  const [portal, setPortal] = useState("client");
   const [tab, setTab] = useState("signin");
 
-  const navigate = useNavigate();
-  const location = useLocation();
-
   useEffect(() => {
-    let unsub = () => {};
+    let mounted = true;
 
-    (async () => {
-      const { data } = await supabase.auth.getSession();
-      setSession(data.session);
-      setInitialized(true);
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(
+      (_event, currentSession) => {
+        if (!mounted) return;
 
-      // если есть сессия, но мы не в кабинете вообще — направляем на /cabinet
-      if (data.session && !location.pathname.startsWith("/cabinet")) {
-        navigate("/cabinet", { replace: true });
+        setSession(currentSession);
+        setInitialized(true);
       }
+    );
 
-      const { data: listener } = supabase.auth.onAuthStateChange((event, sess) => {
-        setSession(sess);
-        if (event === "SIGNED_IN" && sess) {
-          // если уже в кабинете (например, /cabinet/planner) — остаёмся
-          if (!location.pathname.startsWith("/cabinet")) {
-            navigate("/cabinet", { replace: true });
-          }
+    supabase.auth
+      .getSession()
+      .then(({ data, error }) => {
+        if (!mounted) return;
+
+        if (error) {
+          console.error(
+            "Ошибка получения сессии:",
+            error
+          );
         }
+
+        setSession(data?.session ?? null);
+        setInitialized(true);
+      })
+      .catch((error) => {
+        if (!mounted) return;
+
+        console.error(
+          "Ошибка получения сессии:",
+          error
+        );
+
+        setInitialized(true);
       });
 
-      unsub = listener.subscription.unsubscribe;
-    })();
+    const safetyTimer = window.setTimeout(() => {
+      if (!mounted) return;
+
+      setInitialized(true);
+    }, 2000);
 
     return () => {
-      unsub && unsub();
+      mounted = false;
+
+      window.clearTimeout(safetyTimer);
+
+      subscription.unsubscribe();
     };
-  }, [navigate, location.pathname]);
+  }, []);
 
-  if (!initialized) return null;
+  if (!initialized) {
+    return (
+      <div
+        style={{
+          minHeight: "55vh",
+          display: "grid",
+          placeItems: "center",
+          fontSize: 13,
+          color: "#777",
+        }}
+      >
+        Загружаем кабинет…
+      </div>
+    );
+  }
 
-  if (session) return children;
+  if (session) {
+    return children;
+  }
 
   return (
-    <div className="min-h-[60vh] grid place-items-center">
-      <div className="w-full max-w-md rounded-2xl border p-5">
-        <h2 className="text-lg font-semibold mb-3">Вход в кабинет</h2>
+    <div
+      style={{
+        minHeight: "72vh",
+        display: "grid",
+        placeItems: "center",
+        padding: "40px 20px",
+        background: "#fff",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          maxWidth: 500,
+        }}
+      >
+        <div
+          style={{
+            marginBottom: 30,
+          }}
+        >
+          <div
+            style={{
+              marginBottom: 10,
+              color: RED,
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: "0.17em",
+            }}
+          >
+            PAN TERRA / ACCOUNT
+          </div>
 
-        <div className="flex gap-2 mb-4">
-          <TabButton active={tab === "signin"} onClick={() => setTab("signin")}>
-            Войти
-          </TabButton>
-          <TabButton active={tab === "signup"} onClick={() => setTab("signup")}>
-            Регистрация
-          </TabButton>
+          <h1
+            style={{
+              margin: 0,
+              fontSize: 32,
+              lineHeight: 1.05,
+              letterSpacing: "-0.035em",
+              fontWeight: 500,
+            }}
+          >
+            Личный кабинет
+          </h1>
+
+          <p
+            style={{
+              marginTop: 10,
+              marginBottom: 0,
+              color: "#777",
+              fontSize: 13,
+              lineHeight: 1.6,
+            }}
+          >
+            Выберите тип входа.
+          </p>
         </div>
 
-        {tab === "signin" ? <SignInForm /> : <TwoStepSignup />}
+        <div
+          style={{
+            display: "flex",
+            gap: 10,
+            marginBottom: 28,
+          }}
+        >
+          <PortalButton
+            active={portal === "studio"}
+            onClick={() => {
+              setPortal("studio");
+              setTab("signin");
+            }}
+            title="Студия"
+            subtitle="Для команды PAN TERRA"
+          />
 
-        <p className="mt-4 text-xs text-gray-500">
-          Конфиденциальность: e-mail и UID никогда не отображаются публично и доступны только вам.
-          Публичные данные (имя/фамилия/ник) вы выбираете сами.
-        </p>
+          <PortalButton
+            active={portal === "client"}
+            onClick={() => {
+              setPortal("client");
+              setTab("signin");
+            }}
+            title="Заказчик / партнёр"
+            subtitle="Проекты и партнёрская программа"
+          />
+        </div>
+
+        <div
+          style={{
+            borderTop: "1px solid #ECECEC",
+            paddingTop: 24,
+          }}
+        >
+          {portal === "client" && (
+            <div
+              style={{
+                display: "flex",
+                marginBottom: 22,
+              }}
+            >
+              <TabButton
+                active={tab === "signin"}
+                onClick={() => setTab("signin")}
+              >
+                Войти
+              </TabButton>
+
+              <TabButton
+                active={tab === "signup"}
+                onClick={() => setTab("signup")}
+              >
+                Регистрация
+              </TabButton>
+            </div>
+          )}
+
+          {portal === "studio" ? (
+            <>
+              <SignInForm portal="studio" />
+
+              <p
+                style={{
+                  marginTop: 18,
+                  color: "#999",
+                  fontSize: 11,
+                  lineHeight: 1.55,
+                }}
+              >
+                Доступ сотрудников создаётся администратором
+                PAN TERRA.
+              </p>
+            </>
+          ) : tab === "signin" ? (
+            <SignInForm portal="client" />
+          ) : (
+            <TwoStepSignup />
+          )}
+        </div>
       </div>
     </div>
   );

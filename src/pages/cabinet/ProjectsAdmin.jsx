@@ -2,6 +2,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "../../lib/supabase";
 import { INTERNAL_STATUSES, EXTERNAL_STATUSES } from "../../data/statuses";
+const PROJECT_STAGES = [
+  "Бриф и материалы",
+  "Предоплата и старт",
+  "Разработка концепции",
+  "Согласование",
+  "Правки и финализация",
+  "Финальные файлы / проект завершён",
+];
 
 // маппинг: внутренний → внешний (что видит клиент)
 function mapExternal(internal) {
@@ -36,10 +44,9 @@ export default function ProjectsAdmin() {
     if (!me) return;
     (async () => {
       const { data, error } = await supabase
-        .from("projects")
-        .select("*")
-        .eq("owner_id", me.id)
-        .order("created_at", { ascending: false });
+  .from("projects")
+  .select("*")
+  .order("created_at", { ascending: false });
       if (!error) setRows(data || []);
     })();
   }, [me]);
@@ -74,6 +81,23 @@ export default function ProjectsAdmin() {
       .single();
     if (error) return alert(error.message);
     setRows(prev => prev.map(p => p.id === id ? data : p));
+  }
+  async function updateProgress(id, changes) {
+    const { data, error } = await supabase
+      .from("projects")
+      .update(changes)
+      .eq("id", id)
+      .select()
+      .single();
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    setRows((prev) =>
+      prev.map((p) => (p.id === id ? data : p))
+    );
   }
 
   if (!me) return <div>Нужно войти</div>;
@@ -119,9 +143,97 @@ export default function ProjectsAdmin() {
               <div className="text-xs text-gray-500">Создан: {new Date(p.created_at).toLocaleString("ru-RU")}</div>
             </div>
 
-            <div className="mt-2 text-sm text-gray-700">{p.description}</div>
+                        <div className="mt-2 text-sm text-gray-700">
+              {p.description}
+            </div>
 
-            <div className="mt-3 flex flex-wrap items-center gap-3">
+            <div className="mt-5 grid gap-4 md:grid-cols-3">
+              <div>
+                <div className="mb-1 text-xs text-gray-500">
+                  Этап проекта
+                </div>
+
+                <select
+                  className="w-full border rounded-lg px-3 py-2 text-sm"
+                  value={p.stage || 1}
+                  onChange={(e) =>
+                    updateProgress(p.id, {
+                      stage: Number(e.target.value),
+                    })
+                  }
+                >
+                  {PROJECT_STAGES.map((stage, index) => (
+                    <option
+                      key={stage}
+                      value={index + 1}
+                    >
+                      {index + 1} — {stage}
+                    </option>
+                  ))}
+                </select>
+
+                <div className="mt-1 text-xs text-gray-500">
+                  Этап {p.stage || 1} из 6
+                </div>
+              </div>
+
+              <div>
+                <div className="mb-1 text-xs text-gray-500">
+                  Следующий шаг
+                </div>
+
+                <input
+                  className="w-full border rounded-lg px-3 py-2 text-sm"
+                  defaultValue={p.next_step || ""}
+                  placeholder="Например: презентация концепции"
+                  onBlur={(e) =>
+                    updateProgress(p.id, {
+                      next_step:
+                        e.target.value.trim() || null,
+                    })
+                  }
+                />
+              </div>
+
+              <div>
+                <div className="mb-1 text-xs text-gray-500">
+                  Ближайший срок
+                </div>
+
+                <input
+                  type="date"
+                  className="w-full border rounded-lg px-3 py-2 text-sm"
+                  value={p.due_date || ""}
+                  onChange={(e) =>
+                    updateProgress(p.id, {
+                      due_date: e.target.value || null,
+                    })
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="mt-4 rounded-xl bg-gray-50 px-4 py-3">
+              <div className="text-xs uppercase tracking-wide text-gray-500">
+                Заказчик увидит
+              </div>
+
+              <div className="mt-2 font-medium">
+                {PROJECT_STAGES[(p.stage || 1) - 1]}
+              </div>
+
+              <div className="mt-1 text-sm text-gray-600">
+                Этап {p.stage || 1} из 6
+              </div>
+
+              {p.next_step && (
+                <div className="mt-2 text-sm">
+                  Следующий шаг: {p.next_step}
+                </div>
+              )}
+            </div>
+
+            <div className="mt-4 flex flex-wrap items-center gap-3">
               <div className="text-sm">
                 Внутренний статус:
                 <select

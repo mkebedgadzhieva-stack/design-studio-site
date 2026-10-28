@@ -8,6 +8,7 @@ import PrintAds from "./pages/services/PrintAds.jsx";
 import Publishing from "./pages/services/Publishing.jsx";
 import Packaging from "./pages/services/Packaging.jsx";
 import Extras from "./pages/services/Extras.jsx";
+import ServiceDetail from "./pages/services/ServiceDetail.jsx";
 import ProjectsAdmin from "./pages/cabinet/ProjectsAdmin.jsx";
 import PlannerBoard from "./pages/cabinet/PlannerBoard.jsx";
 
@@ -19,13 +20,14 @@ import {
   useLocation,
   Outlet,
 } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import AuthGate from "./features/auth/AuthGate.jsx";
 import AuthCallback from "./features/auth/AuthCallback.jsx";
 
 import CabinetLayout from "./cabinet/CabinetLayout.jsx";
 import PartnerDashboard from "./pages/cabinet/PartnerDashboard.jsx";
+import ClientDashboard from "./pages/cabinet/ClientDashboard.jsx";
 import Commissions from "./pages/cabinet/Commissions.jsx";
 import Payouts from "./pages/cabinet/Payouts.jsx";
 
@@ -37,7 +39,8 @@ import Store from "./pages/Store.jsx";
 
 /* ---------------- THEME ---------------- */
 const THEME = {
-  brandName: "Mari Studio",
+  brandName: "PAN TERRA",
+brandDescriptor: "DESIGN STUDIO",
   accent: "#0f172a",
   accentSoft: "#e5e7eb",
   fontHeading: "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial",
@@ -46,9 +49,9 @@ const THEME = {
 
 /* --------------- ДЕМО-ДАННЫЕ (главная) --------------- */
 const SERVICES_DEMO = [
-  { id: "identity", title: "Basic", price: 25000, desc: "Гайдлайн (мини-брендбук) — базовый стартовый пакет", bullets: ["2–3 концепции логотипа", "Гайд на 8–12 стр.", "2 раунда правок"] },
-  { id: "brandkit", title: "Фирменный стиль", price: 45000, desc: "Средний пакет для компаний, которым нужно больше, чем логотип", bullets: ["3 концепции логотипа", "Гайд 20–30 стр.", "Шаблоны постов/сторис", "3 раунда правок"] },
-  { id: "premium", title: "Брендбук (полный)", price: 65000, desc: "Максимальный пакет с поддержкой внедрения", bullets: ["4 концепции логотипа", "Брендбук 60+ стр.", "Печатные макеты", "Поддержка внедрения (7 дней консультаций)"] },
+  { id: "identity", title: "Basic", price: 60000, desc: "Гайдлайн (мини-брендбук) — базовый стартовый пакет", bullets: ["2–3 концепции логотипа", "Гайд на 8–12 стр.", "2 раунда правок"] },
+  { id: "brandkit", title: "Фирменный стиль", price: 90000, desc: "Средний пакет для компаний, которым нужно больше, чем логотип", bullets: ["3 концепции логотипа", "Гайд 20–30 стр.", "Шаблоны постов/сторис", "3 раунда правок"] },
+  { id: "premium", title: "Брендбук (полный)", price: 150000, desc: "Максимальный пакет с поддержкой внедрения", bullets: ["4 концепции логотипа", "Брендбук 60+ стр.", "Печатные макеты", "Поддержка внедрения (7 дней консультаций)"] },
 ];
 
 const WORKS = [
@@ -115,11 +118,13 @@ function Hero() {
     <section className="relative overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 py-24 md:py-32">
         <h1
-          className="text-4xl md:text-6xl font-semibold tracking-tight"
-          style={{ fontFamily: "var(--font-heading)", lineHeight: 1.05 }}
-        >
-          Мы отбираем то, что заслуживает места <span className="whitespace-nowrap">на твоём столе</span>
-        </h1>
+  data-header-trigger="true"
+  className="text-4xl md:text-6xl font-semibold tracking-tight"
+  style={{ fontFamily: "var(--font-heading)", lineHeight: 1.05 }}
+>
+  Тут пока нет текста,{" "}
+  <span className="whitespace-nowrap">но он будет классный</span>
+</h1>
         <p className="mt-6 text-gray-600 max-w-2xl">
           Кураторская дизайн-студия: айдентика, упаковка, презентации и сайт-визитка.
         </p>
@@ -170,46 +175,176 @@ function WorksGrid() {
 function Shell({ children }) {
   useThemeVars();
   useReferralCapture();
+const [headerHidden, setHeaderHidden] = useState(false);
+const headerRef = useRef(null);
+const location = useLocation();
+const isCabinet = location.pathname.startsWith("/cabinet");
+
+useEffect(() => {
+  const checkHeader = () => {
+    const trigger = document.querySelector("[data-header-trigger]");
+
+    if (!trigger) {
+      setHeaderHidden(false);
+      return;
+    }
+
+    const headerHeight = headerRef.current?.offsetHeight || 0;
+
+    setHeaderHidden(
+      trigger.getBoundingClientRect().top <= headerHeight
+    );
+  };
+
+  checkHeader();
+
+  window.addEventListener("scroll", checkHeader, { passive: true });
+  window.addEventListener("resize", checkHeader);
+
+  return () => {
+    window.removeEventListener("scroll", checkHeader);
+    window.removeEventListener("resize", checkHeader);
+  };
+}, [location.pathname]);
+
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (ticking) return;
+
+      ticking = true;
+
+      window.requestAnimationFrame(() => {
+        const currentScrollY = window.scrollY;
+        const difference = currentScrollY - lastScrollY.current;
+
+        if (currentScrollY <= 10) {
+          setIsHeaderVisible(true);
+        } else if (difference > 6) {
+          setIsHeaderVisible(false);
+        } else if (difference < -6) {
+          setIsHeaderVisible(true);
+        }
+
+        lastScrollY.current = currentScrollY;
+        ticking = false;
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen text-gray-900" style={{ fontFamily: "var(--font-body)" }}>
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-xl" style={{ background: "var(--accent)" }} />
-            <span className="font-semibold tracking-tight" style={{ fontFamily: "var(--font-heading)" }}>
-              Mari Studio
-            </span>
-          </Link>
+      <header
+  ref={headerRef}
+  className={`sticky top-0 z-50 bg-white border-b transition-transform duration-300 ${
+    headerHidden ? "-translate-y-full" : "translate-y-0"
+  }`}
+>
+  <div className="max-w-6xl mx-auto px-4 py-2 flex items-center gap-8">
+    <Link
+      to="/"
+      style={{
+        display: "block",
+        width: "150px",
+        flexShrink: 0,
+      }}
+    >
+      <img
+        src="/logo.svg"
+        alt="PAN TERRA DESIGN STUDIO"
+        style={{
+          display: "block",
+          width: "100%",
+          height: "auto",
+        }}
+      />
+    </Link>
 
-          <nav className="hidden md:flex items-center gap-6 text-sm">
-            <Link to="/portfolio" className="hover:opacity-70">Портфолио</Link>
-            <ServicesDropdown />
-            <Link to="/studio" className="hover:opacity-70">О студии</Link>
-            <Link to="/store" className="hover:opacity-70">Store</Link>
-            <Link to="/partners" className="hover:opacity-70">Партнёрская программа</Link>
-            <Link to="/offer" className="hover:opacity-70">Публичная оферта</Link>
-            <Link to="/cabinet" className="hover:opacity-70">Личный кабинет</Link>
-          </nav>
+    <div className="ml-auto flex items-center gap-8">
+      <nav className="hidden md:flex items-center gap-8 text-sm">
+        <Link to="/portfolio" className="hover:opacity-70">
+          Портфолио
+        </Link>
 
-          <div className="flex items-center gap-2">
-            <Link to="/contact" className="inline-flex items-center justify-center rounded-xl border px-4 py-2 text-sm">
-              Оставить заявку
-            </Link>
-          </div>
-        </div>
-      </header>
+        <ServicesDropdown />
 
-      {children}
+        <Link to="/studio" className="hover:opacity-70">
+          О студии
+        </Link>
 
-      <footer className="border-t">
-        <div className="max-w-6xl mx-auto px-4 py-10 text-sm text-gray-600 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div>© {new Date().getFullYear()} Mari Studio. Все права защищены.</div>
-          <div className="flex items-center gap-4">
-            <a href="https://t.me/themarrrr" className="hover:opacity-70">Telegram</a>
-            <a href="mailto:hello@example.com" className="hover:opacity-70">E-mail</a>
-          </div>
-        </div>
-      </footer>
+        <Link to="/cabinet" className="hover:opacity-70">
+          Личный кабинет
+        </Link>
+      </nav>
+
+      <Link
+        to="/contact"
+        className="inline-flex items-center justify-center rounded-xl border px-4 py-2 text-sm whitespace-nowrap"
+      >
+        Оставить заявку
+      </Link>
+    </div>
+  </div>
+</header>
+
+            {children}
+
+      {!isCabinet && (
+        <>
+          <ContactUs
+            whatsapp="79222817779"
+            telegram="themarrrr"
+          />
+
+          <footer className="border-t">
+            <div className="max-w-6xl mx-auto px-4 py-8 text-sm text-gray-600 flex flex-col md:flex-row items-center justify-between gap-4">
+              <div>
+                © {new Date().getFullYear()} PAN TERRA. Все права защищены.
+              </div>
+
+              <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+                <Link
+                  to="/partners"
+                  className="hover:opacity-70"
+                >
+                  Партнёрам
+                </Link>
+
+                <Link
+                  to="/offer"
+                  className="hover:opacity-70"
+                >
+                  Публичная оферта
+                </Link>
+
+                <a
+                  href="https://t.me/themarrrr"
+                  className="hover:opacity-70"
+                >
+                  Telegram
+                </a>
+
+                <a
+                  href="mailto:hello@example.com"
+                  className="hover:opacity-70"
+                >
+                  E-mail
+                </a>
+              </div>
+            </div>
+          </footer>
+                </>
+      )}
     </div>
   );
 }
@@ -222,7 +357,7 @@ function Home() {
       <Section id="services" title="Пакеты услуг" subtitle="Выбирай подходящий — и вперёд.">
         <ServicesGrid />
       </Section>
-      <Section id="portfolio" title="Избранные работы" subtitle="Собираем достойное на твой стол.">
+      <Section id="portfolio" title="Пока тут пусто" subtitle="Собираем достойное на твой стол.">
         <WorksGrid />
       </Section>
     </>
@@ -232,7 +367,139 @@ function Home() {
 function Portfolio() { return <Section id="portfolio" title="Портфолио"><WorksGrid /></Section>; }
 function Studio() { return <Section id="studio" title="О студии"><Card>Мы делаем айдентику, упаковку, презентации.</Card></Section>; }
 function Contact() { return <Section id="contact" title="Контакты"><Card>Форма и контакты.</Card></Section>; }
-function Partners() { return <Section id="partners" title="Партнёрская программа"><Card>Про реферальные проценты.</Card></Section>; }
+function NotFound() {
+  return (
+    <Section id="not-found" title="Страница не найдена" subtitle="Возможно, ссылка устарела или страница ещё в работе.">
+      <Button to="/">На главную</Button>
+    </Section>
+  );
+}
+function Partners() {
+  const steps = [
+    {
+      number: "01",
+      title: "Рекомендуете PAN TERRA",
+      text: "Передаёте клиенту свою персональную ссылку или промокод.",
+    },
+    {
+      number: "02",
+      title: "Клиент заказывает дизайн",
+      text: "Мы самостоятельно обсуждаем задачу, заключаем договор и ведём проект.",
+    },
+    {
+      number: "03",
+      title: "Вы получаете 10%",
+      text: "После полной оплаты проекта комиссия становится доступна к выплате.",
+    },
+  ];
+
+  return (
+    <>
+      <section className="max-w-6xl mx-auto px-4 pt-20 pb-14 md:pt-28 md:pb-20">
+        <div className="max-w-3xl">
+          <p className="text-sm font-medium uppercase tracking-[0.25em] text-red-600">
+            Партнёрская программа
+          </p>
+
+          <h1
+            className="mt-5 text-4xl md:text-6xl font-semibold tracking-tight"
+            style={{
+              fontFamily: "var(--font-heading)",
+              lineHeight: 1.05,
+            }}
+          >
+            Приводите клиентов.
+            <br />
+            Получайте 10%.
+          </h1>
+
+          <p className="mt-6 max-w-2xl text-lg text-gray-600">
+            Рекомендуйте PAN TERRA тем, кому нужен дизайн. Мы берём
+            проект на себя, а вы получаете вознаграждение за рекомендацию.
+          </p>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Button to="/cabinet">Стать партнёром</Button>
+
+            <a
+              href="#how-it-works"
+              className="inline-flex items-center justify-center rounded-xl px-4 py-2 hover:bg-gray-50"
+            >
+              Как это работает ↓
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="how-it-works"
+        className="max-w-6xl mx-auto px-4 py-16 border-t"
+      >
+        <h2 data-header-trigger
+  className="text-2xl md:text-3xl font-semibold">
+          Всё очень просто
+        </h2>
+
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
+          {steps.map((step) => (
+            <Card key={step.number} className="p-6">
+              <div className="text-sm font-medium text-red-600">
+                {step.number}
+              </div>
+
+              <h3 className="mt-8 text-xl font-semibold">
+                {step.title}
+              </h3>
+
+              <p className="mt-3 text-gray-600">
+                {step.text}
+              </p>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-4 py-16">
+        <div className="rounded-2xl border p-6 md:p-10">
+          <div className="grid gap-10 md:grid-cols-2">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-semibold">
+                Условия программы
+              </h2>
+
+              <p className="mt-4 text-gray-600">
+                Без сложных уровней, скрытых условий и необходимости
+                участвовать в самом проекте.
+              </p>
+            </div>
+
+            <ul className="space-y-4">
+              <li>— Вознаграждение — 10% от первого проекта клиента.</li>
+              <li>— Комиссия рассчитывается от фактически оплаченной суммы.</li>
+              <li>— Клиент закрепляется по ссылке, промокоду или рекомендации.</li>
+              <li>— Выплата производится после полной оплаты проекта.</li>
+              <li>— Отменённые и возвращённые заказы не учитываются.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-4 pt-10 pb-24 text-center">
+        <h2 className="text-3xl md:text-4xl font-semibold">
+          Знаете, кому нужен хороший дизайн?
+        </h2>
+
+        <p className="mt-4 text-gray-600">
+          Зарегистрируйтесь и получите персональную партнёрскую ссылку.
+        </p>
+
+        <div className="mt-8">
+          <Button to="/cabinet">Присоединиться</Button>
+        </div>
+      </section>
+    </>
+  );
+}
 
 /* --------------- Маршруты --------------- */
 export default function App() {
@@ -243,11 +510,8 @@ export default function App() {
         <Route
           element={
             <Shell>
-              <>
-                <Outlet />
-                <ContactUs whatsapp="79222817779" telegram="themarrrr" />
-              </>
-            </Shell>
+  <Outlet />
+</Shell>
           }
         >
           {/* публичные страницы */}
@@ -260,7 +524,9 @@ export default function App() {
             <Route path="small-formats" element={<SmallFormats />} />
             <Route path="print-ads" element={<PrintAds />} />
             <Route path="publishing" element={<Publishing />} />
+            <Route path="packaging" element={<Packaging />} />
             <Route path="extras" element={<Extras />} />
+            <Route path=":slug" element={<ServiceDetail />} />
           </Route>
           <Route path="/studio" element={<Studio />} />
           <Route path="/store" element={<Store />} />
@@ -277,13 +543,15 @@ export default function App() {
               </AuthGate>
             }
           >
-            <Route index element={<PartnerDashboard />} />
+            <Route index element={<ClientDashboard />} />
             <Route path="commissions" element={<Commissions />} />
             <Route path="payouts" element={<Payouts />} />
 <Route path="projects" element={<ProjectsAdmin />} />
             <Route path="projects/:id" element={<Project />} />
 <Route path="planner" element={<PlannerBoard />} />
           </Route>
+
+          <Route path="*" element={<NotFound />} />
         </Route>
 
         {/* OAuth callback (может быть снаружи оболочки) */}
