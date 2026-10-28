@@ -3,6 +3,7 @@
 Сначала — список действий для Марьям (каждое один раз), затем подробности.
 
 ## Что нужно от Марьям
+0. **Доступ GitHub на запись (B-004):** переподключить GitHub и установить Claude GitHub App на репозиторий — без этого результат не попадает на GitHub и расписание не включить.
 1. **Разрешения для автопилота (B-001):** решить, включать ли `docs/autopilot/proposed-settings.json` (как — RUNBOOK.md, «Разрешения»).
 2. **Ассеты пантеры (B-002):** нужен иллюстратор/аниматор или исходные слои пантеры — задание ниже.
 3. **Права в базе (SEC-01/SEC-02):** разрешить применение миграции безопасности, когда она будет готова; включить Leaked password protection в Supabase.
@@ -10,6 +11,14 @@
 5. **Фон-бумага (FIX-05):** `public/textures/paper.jpg` удалён намеренно?
 
 ---
+
+## B-004 — Нет доступа на запись в GitHub (push 403)
+- **Задача:** сохранить результат первого запуска в `claude/studio-autopilot`.
+- **Точная ошибка (28.10.2026, `git push -u origin claude/studio-autopilot`):** `remote: Claude doesn't have GitHub access to mkebedgadzhieva-stack/design-studio-site for your organization. An org admin can install the Claude GitHub App …, or reconnect GitHub from claude.ai settings …` → `fatal: unable to access 'https://github.com/mkebedgadzhieva-stack/design-studio-site/': The requested URL returned error: 403`. Чтение (fetch, список веток) работает.
+- **Попытки:** одна; это отказ авторизации, не сеть — повторы не помогут.
+- **Сохранность:** коммиты есть только в облачном контейнере; копия передана Марьям файлом `pan-terra-autopilot.bundle` (git bundle ветки `claude/studio-autopilot`).
+- **Минимальное действие:** переподключить GitHub на https://claude.ai/connect-github и установить Claude GitHub App на репозиторий `design-studio-site` (на той же странице). Затем либо попросить Claude в этой сессии повторить push, либо применить bundle у себя (RUNBOOK → «Если push не прошёл»).
+- **Зависит:** облачное расписание (не создано до решения B-004).
 
 ## B-001 — Запись проектных разрешений заблокирована
 - **Задача:** настройка unattended-режима (раздел 2 автопилот-промпта).

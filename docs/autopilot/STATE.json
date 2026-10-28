@@ -6,12 +6,23 @@
   "repository": "mkebedgadzhieva-stack/design-studio-site",
   "base_sha": "7fe9ae15da804c6f0d665ee036462db334f97d67",
   "last_verified_sha": "7fe9ae15da804c6f0d665ee036462db334f97d67",
-  "last_verified_note": "Проверки запуска 2026-10-28 выполнены на рабочем дереве, которое зафиксировано коммитом, изменившим этот файл (первый коммит после base_sha с сообщением «Autopilot: …»). Следующий запуск: если HEAD — этот коммит и дерево чистое, считать его проверенным и записать его SHA сюда.",
+  "last_verified_note": "Проверки запуска 2026-10-28 выполнены на дереве коммита «Autopilot: команда агентов…» (c8fe7bb); следующий коммит меняет только docs/autopilot (B-004, расписание). На GitHub на момент записи — только 7fe9ae1.",
   "active_task": null,
-  "completed": ["FIX-01"],
-  "in_review": ["MOTION-02"],
-  "blocked": ["MOTION-01", "UX-02", "CNT-01", "FIX-05"],
+  "completed": [
+    "FIX-01"
+  ],
+  "in_review": [
+    "MOTION-02"
+  ],
+  "blocked": [
+    "MOTION-01",
+    "UX-02",
+    "CNT-01",
+    "FIX-05",
+    "push/B-004"
+  ],
   "pending_checks": [
+    "Push в origin/claude/studio-autopilot не выполнен (403). Следующий запуск: проверить, есть ли коммиты автопилота на GitHub; если нет — восстановить из bundle или повторить push.",
     "MOTION-02: подключить остальные критичные запросы кабинета и lazy-чанки, повторить QA",
     "Контрольный запуск в режиме dontAsk после включения разрешений (BLOCKERS B-001)",
     "Первый запуск облачного расписания — проверить результат в истории сессий"
@@ -24,13 +35,19 @@
     "TARGET_RUN_MINUTES": 45
   },
   "schedule": {
-    "mechanism": "none-confirmed",
-    "details": "см. RUNBOOK.md, раздел «Расписание»"
+    "mechanism": "none",
+    "reason": "push в GitHub отклонён (403, BLOCKERS B-004); параметры для создания — RUNBOOK.md «Расписание»",
+    "timezone": "Europe/Moscow",
+    "planned_cron": "CRON_TZ=Europe/Moscow 42 9 * * *"
   },
   "last_run": {
     "date": "2026-10-28",
     "kind": "first-run (ручной, облачная сессия)",
-    "tasks": ["FIX-01", "MOTION-01 (частично)", "MOTION-02 (механизм)"],
+    "tasks": [
+      "FIX-01",
+      "MOTION-01 (частично)",
+      "MOTION-02 (механизм)"
+    ],
     "checks": "lint 0 ошибок; npm test 7/7; build ок; браузер 18/18"
   }
 }
