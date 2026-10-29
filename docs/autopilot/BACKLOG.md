@@ -63,7 +63,8 @@
 ### REL-01 — Проверки в GitHub Actions (без деплоя)
 - **Проблема:** нет CI; ошибки сборки/линтера видны только локально.
 - **Польза:** каждый push в ветку автоматически проверяется.
-- **Приоритет:** P2 · **Статус:** in_review (29.10.2026: `.github/workflows/checks.yml` — `npm ci`, lint, test, build на push в `claude/**`, `feature/**` и PR; права только `contents: read`; деплоя нет. Локально та же последовательность зелёная; результат на GitHub — проверить после push) · **Исполнитель:** координатор
+- **Приоритет:** P2 · **Статус:** done (29.10.2026) · **Исполнитель:** координатор
+- **Сделано:** `.github/workflows/checks.yml` — `npm ci`, lint, test, build на push в `claude/**`, `feature/**` и PR; права только `contents: read`; деплоя нет. Первый прогон на GitHub (ade955b): success — https://github.com/mkebedgadzhieva-stack/design-studio-site/actions/runs/40833266014
 - **Критерии приёмки:** workflow `npm ci && npm run lint && npm test && npm run build` на push/PR; ничего не публикует; зелёный на текущем коммите.
 
 ### REL-02 — Большой JS-бандл (≈834 КБ, 252 КБ gzip)

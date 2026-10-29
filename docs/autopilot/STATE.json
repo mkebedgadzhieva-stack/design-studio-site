@@ -10,11 +10,11 @@
   "active_task": null,
   "completed": [
     "FIX-01",
-    "FIX-02"
+    "FIX-02",
+    "REL-01"
   ],
   "in_review": [
-    "MOTION-02",
-    "REL-01"
+    "MOTION-02"
   ],
   "blocked": [
     "MOTION-01",
