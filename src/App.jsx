@@ -129,7 +129,7 @@ function Hero() {
   style={{ fontFamily: "var(--font-heading)", lineHeight: 1.05 }}
 >
   Тут пока нет текста,{" "}
-  <span className="whitespace-nowrap">но он будет классный</span>
+  <span className="md:whitespace-nowrap">но он будет классный</span>
 </h1>
         <p className="mt-6 text-gray-600 max-w-2xl">
           Кураторская дизайн-студия: айдентика, упаковка, презентации и сайт-визитка.

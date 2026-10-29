@@ -110,18 +110,18 @@ export default function ProjectsAdmin() {
       {/* Создание проекта */}
       <form onSubmit={createProject} className="grid gap-3 md:grid-cols-5 p-4 border rounded-2xl bg-white/70">
         <input
-          className="border rounded-xl px-3 py-2 md:col-span-2"
+          className="min-w-0 w-full border rounded-xl px-3 py-2 md:col-span-2"
           placeholder="Название проекта"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <input
           type="date"
-          className="border rounded-xl px-3 py-2"
+          className="min-w-0 w-full border rounded-xl px-3 py-2"
           value={due}
           onChange={(e) => setDue(e.target.value)}
         />
-        <button className="rounded-xl border px-3 py-2 hover:bg-gray-50">Создать</button>
+        <button className="min-w-0 w-full rounded-xl border px-3 py-2 hover:bg-gray-50">Создать</button>
         <div className="md:col-span-5">
           <textarea
             className="border rounded-xl px-3 py-2 w-full"
