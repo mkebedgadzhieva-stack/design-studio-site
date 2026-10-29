@@ -37,6 +37,9 @@ _Обновлено: 28.10.2026. Ветка `claude/studio-autopilot`. Акту�
 `src/App.jsx`, `src/cabinet/CabinetLayout.jsx`, `src/components/ProjectModal.jsx`, `src/features/auth/AuthGate.jsx`, `src/pages/cabinet/ProjectsAdmin.jsx`, удалён `public/textures/paper.jpg`, новые `public/logo.svg`, `src/pages/cabinet/ClientDashboard.jsx`.
 
 ## Изменения, внесённые Claude
+29.10.2026:
+- FIX-02: в меню кабинета вместо жёстко прописанного «Марьям» — имя вошедшего пользователя (или e-mail), `src/lib/userDisplay.js`.
+
 28.10.2026 (первый запуск автопилота):
 - Конфигурация команды: 10 агентов `.claude/agents/`, 10 команд `.claude/skills/studio-*`, память `docs/autopilot/`, спецификация и QA анимаций `docs/motion/`, дополнен `CLAUDE.md`.
 - FIX-01: линтер — убран неиспользуемый код (`isHeaderVisible` в `src/App.jsx`, `useMemo` в `ProjectsAdmin.jsx`), загрузка в `PlannerBoard.jsx` перенесена в эффект с отменой устаревшего ответа.

@@ -3,6 +3,7 @@ import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import PantherLoader from "../motion/PantherLoader.jsx";
 import { useDelayedPending } from "../motion/useDelayedPending.js";
+import { getDisplayName, getInitial } from "../lib/userDisplay.js";
 
 const RED = "#E31924";
 const PAPER = "#FAF9F6";
@@ -132,6 +133,7 @@ export default function CabinetLayout() {
   const location = useLocation();
 
   const [role, setRole] = useState(null);
+  const [userName, setUserName] = useState("");
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
   const [attempt, setAttempt] = useState(0);
@@ -158,8 +160,11 @@ export default function CabinetLayout() {
 
         if (!user) {
           setRole(null);
+          setUserName("");
           return;
         }
+
+        setUserName(getDisplayName(user));
 
         const { data, error } = await supabase
           .from("profiles")
@@ -490,8 +495,9 @@ export default function CabinetLayout() {
 
                   fontWeight: 700,
                 }}
+                aria-hidden="true"
               >
-                М
+                {getInitial(userName)}
               </span>
 
               <span
@@ -512,10 +518,14 @@ export default function CabinetLayout() {
                     lineHeight: 1.2,
                     fontWeight: 650,
 
+                    maxWidth: 170,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
                   }}
+                  title={userName}
                 >
-                  Марьям
+                  {userName}
                 </span>
 
                 <span
