@@ -78,3 +78,8 @@ npm run build
 npm run dev   # http://localhost:5173, превью анимаций: http://localhost:5173/dev/motion
 ```
 Без `.env.local` (облако): `VITE_SUPABASE_URL=http://127.0.0.1:54321 VITE_SUPABASE_ANON_KEY=dev-placeholder npx vite --port 5173` — сайт открывается, кабинет без настоящей базы.
+
+## Приватный предпросмотр сайта (без публикации)
+- Ссылка (видна только Марьям, пока она сама не поделится): https://claude.ai/artifact/6g2znZMW1WPjCKa17sRhyc — опубликована 29.10.2026 из ветки `claude/studio-autopilot` (коммит с `vite.preview.config.js`).
+- Это отдельная сборка: маршруты в памяти (`VITE_PREVIEW_ROUTER=memory`), относительные пути к картинкам, база данных не подключена (вход в кабинет не работает), сверху плашка «Предпросмотр, не опубликованный сайт». Рабочий сайт и `npm run build` не меняются.
+- Обновить: `VITE_PREVIEW_ROUTER=memory VITE_SUPABASE_URL=https://preview-no-database.invalid VITE_SUPABASE_ANON_KEY=preview-placeholder npx vite build --config vite.preview.config.js --outDir <папка>`, затем опубликовать страницу-обёртку с файлами `assets/*`, `logo.svg`, `icons/*`, `motion/*` в тот же артефакт (Artifact, тот же URL).

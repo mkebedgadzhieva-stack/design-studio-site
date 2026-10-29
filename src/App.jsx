@@ -14,6 +14,7 @@ import PlannerBoard from "./pages/cabinet/PlannerBoard.jsx";
 
 import {
   BrowserRouter,
+  MemoryRouter,
   Routes,
   Route,
   Link,
@@ -42,6 +43,11 @@ import FooterPanther from "./motion/FooterPanther.jsx";
 const MotionPreview = import.meta.env.DEV
   ? lazy(() => import("./dev/MotionPreview.jsx"))
   : null;
+
+// Приватный предпросмотр (vite.preview.config.js) открывается не из корня сайта,
+// поэтому там маршруты живут в памяти; на обычном сайте — BrowserRouter.
+const Router =
+  import.meta.env.VITE_PREVIEW_ROUTER === "memory" ? MemoryRouter : BrowserRouter;
 
 /* ---------------- THEME ---------------- */
 const THEME = {
@@ -477,7 +483,7 @@ function Partners() {
 /* --------------- Маршруты --------------- */
 export default function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
         {/* ОБОЛОЧКА САЙТА (общая шапка + футер) */}
         <Route
@@ -541,6 +547,6 @@ export default function App() {
         {/* OAuth callback (может быть снаружи оболочки) */}
         <Route path="/auth/callback" element={<AuthCallback />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
