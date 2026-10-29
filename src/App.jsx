@@ -36,6 +36,7 @@ import ContactUs from "./components/ContactUs";
 import Cabinet from "./pages/Cabinet.tsx"; // если не используешь — можешь удалить импорт
 import Offer from "./pages/Offer.jsx";
 import Store from "./pages/Store.jsx";
+import FooterPanther from "./motion/FooterPanther.jsx";
 
 // Превью анимаций — только в режиме разработки, в production-сборку не попадает.
 const MotionPreview = import.meta.env.DEV
@@ -275,6 +276,8 @@ useEffect(() => {
             whatsapp="79222817779"
             telegram="themarrrr"
           />
+
+          <FooterPanther />
 
           <footer className="border-t">
             <div className="max-w-6xl mx-auto px-4 py-8 text-sm text-gray-600 flex flex-col md:flex-row items-center justify-between gap-4">

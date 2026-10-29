@@ -1,0 +1,26 @@
+/* Параметры — docs/motion/SPEC.md, «Сцена B». */
+.pt-footer-panther {
+  height: clamp(96px, 14vw, 160px);
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.pt-footer-panther__track {
+  position: relative;
+  max-width: 72rem; /* как max-w-6xl у футера */
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.pt-footer-panther__figure {
+  position: absolute;
+  bottom: 0;
+  left: 1rem;
+  height: 80%;
+  width: auto;
+  max-width: calc(100% - 2rem);
+  object-fit: contain;
+  object-position: left bottom;
+}

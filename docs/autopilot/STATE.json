@@ -9,10 +9,12 @@
   "last_verified_note": "d2bbafa — на GitHub (push 29.10.2026); проверки lint/test/build/браузер выполнены на c8fe7bb, d2bbafa меняет только docs/autopilot.",
   "active_task": null,
   "completed": [
-    "FIX-01"
+    "FIX-01",
+    "FIX-02"
   ],
   "in_review": [
-    "MOTION-02"
+    "MOTION-02",
+    "REL-01"
   ],
   "blocked": [
     "MOTION-01",
@@ -25,7 +27,7 @@
     "Контрольный запуск в режиме dontAsk после включения разрешений (BLOCKERS B-001)",
     "Первый плановый запуск 30.10.2026 09:42 МСК — проверить коммит и REPORT.md"
   ],
-  "next_step": "FIX-02 (имя пользователя в меню кабинета), затем REL-01 (CI без деплоя) и MOTION-03 (полоса у футера со статичным вариантом).",
+  "next_step": "Проверить первый прогон GitHub Actions (REL-01); затем CLN-01 (мусорные файлы) и REL-02 (разделение бандла с загрузчиком на lazy-чанках). Задачи с решением Марьям — не трогать.",
   "limits": {
     "MAX_CONCURRENT_AGENTS": 2,
     "MAX_TASKS_PER_RUN": 3,
@@ -44,13 +46,16 @@
     "verified": "list_triggers 29.10.2026: одна задача, enabled"
   },
   "last_run": {
-    "date": "2026-10-28",
-    "kind": "first-run (ручной, облачная сессия)",
+    "date": "2026-10-29",
+    "kind": "ручной запуск по просьбе Марьям (облачная сессия)",
     "tasks": [
-      "FIX-01",
-      "MOTION-01 (частично)",
-      "MOTION-02 (механизм)"
+      "FIX-02",
+      "REL-01",
+      "MOTION-03 (статичный вариант)"
     ],
-    "checks": "lint 0 ошибок; npm test 7/7; build ок; браузер 18/18"
-  }
+    "checks": "lint 0; npm test 12/12; build ок; браузер: имена 4/4, футер 13/14 + ленивая загрузка на длинной странице"
+  },
+  "in_progress": [
+    "MOTION-03"
+  ]
 }
