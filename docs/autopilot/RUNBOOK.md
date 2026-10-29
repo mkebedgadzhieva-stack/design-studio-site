@@ -26,15 +26,17 @@
 Открой сессию с репозиторием `design-studio-site` и веткой `claude/studio-autopilot` и напиши ту же команду.
 
 ## Расписание
-- **Активный механизм: нет.** Облачная задача не создана намеренно: 28.10.2026 push в GitHub отклонён (403, BLOCKERS B-004) — облачный запуск склонировал бы ветку без памяти автопилота и не смог бы сохранить результат. Локальный runner тоже не создан (нужен включённый компьютер; одновременно два механизма не включаем).
-- **Создать после того, как push заработает** (одна задача, без дубликатов — сначала проверить список существующих):
-  - Где: claude.ai/code → Scheduled tasks (или попросить Claude в облачной сессии с этим репозиторием: «создай расписание по RUNBOOK»).
+- **Активный механизм:** облачная задача Claude Code (scheduled task), создана 29.10.2026 и проверена списком задач аккаунта — она одна.
+  - ID: `trig_01JcqcDzob7QJL9tLyxpJNNr`
   - Название: `PAN TERRA автопилот`
-  - Репозиторий: `mkebedgadzhieva-stack/design-studio-site`, ветка `claude/studio-autopilot`
-  - Расписание: ежедневно 09:42 по Москве (`CRON_TZ=Europe/Moscow 42 9 * * *`; смещение от 10:00, чтобы не попадать в пик ровного часа)
-  - Режим: новая сессия на каждый запуск.
-  - Текст задачи:
-    > Автопилот PAN TERRA, плановый запуск. Перейди на ветку `claude/studio-autopilot` (`git fetch origin claude/studio-autopilot && git switch claude/studio-autopilot`). Если ветки нет или в ней нет `docs/autopilot/STATE.json` — заверши запуск с диагностикой, проект заново не начинай. Прочитай `CLAUDE.md` и `docs/autopilot/` (STATE, BACKLOG, BLOCKERS, RUNBOOK). Если `paused: true` — ничего не меняй и заверши. Иначе выполни один ограниченный цикл `/studio-auto` (до 3 задач, проверки lint/test/build, браузер для UI). Перед push снова `git fetch`: если удалённая ветка ушла вперёд — сохрани работу в `claude/studio-autopilot-conflict-<дата>` и заверши с записью в BLOCKERS. Обычный push в `claude/studio-autopilot`, без force. Рабочую базу, `main` и публикацию не трогай.
+  - Расписание: ежедневно 09:42 по Москве (`CRON_TZ=Europe/Moscow 42 9 * * *`). Первый запуск — 30.10.2026 09:42 МСК (06:42 UTC).
+  - Куда приходит: в облачную сессию `session_01VqW66d42rvhncjGgQn5pQM` («PAN TERRA первый запуск», claude.ai/code). У этой сессии ветка `claude/studio-autopilot` и разрешён push в неё.
+  - Почему в одну сессию: если в момент срабатывания там идёт работа, запуск ждёт её окончания — две работы над веткой одновременно не идут. Работа в других местах (компьютер Марьям, другие сессии) защищена правилом «перед push — `git fetch`; если ветка ушла вперёд — сохранить в `claude/studio-autopilot-conflict-<дата>`, не форсировать».
+  - Что делает запуск: `git pull --ff-only` ветки → чтение `docs/autopilot/` → проверка паузы → один цикл `/studio-auto` (до 3 задач, lint/test/build, браузер) → обновление памяти → `git fetch` и обычный push → проверка, что GitHub совпадает с локальным HEAD.
+  - Локальный runner не создан (одновременно два механизма не включаем).
+- **Где смотреть результат:** коммиты в ветке https://github.com/mkebedgadzhieva-stack/design-studio-site/tree/claude/studio-autopilot, `docs/autopilot/REPORT.md`, сама сессия на claude.ai/code.
+- **Остановить/включить вручную:** claude.ai/code → меню слева «Scheduled tasks» (Запланированные задачи) → «PAN TERRA автопилот» → переключатель Enabled. Или `/studio-pause` / `/studio-resume` в сессии.
+- **Изменить время:** там же → Edit → расписание; либо попросить Claude: «измени расписание trig_01JcqcDzob7QJL9tLyxpJNNr».
 - **Часовой пояс:** Europe/Moscow.
 - **Источник:** ветка `claude/studio-autopilot`, состояние — `docs/autopilot/STATE.json`.
 - **Результаты:** коммиты в `claude/studio-autopilot`, отчёт `docs/autopilot/REPORT.md`, история сессий на claude.ai/code.

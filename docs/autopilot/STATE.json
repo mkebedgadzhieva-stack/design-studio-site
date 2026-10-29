@@ -5,8 +5,8 @@
   "integration_branch": "claude/studio-autopilot",
   "repository": "mkebedgadzhieva-stack/design-studio-site",
   "base_sha": "7fe9ae15da804c6f0d665ee036462db334f97d67",
-  "last_verified_sha": "7fe9ae15da804c6f0d665ee036462db334f97d67",
-  "last_verified_note": "Проверки запуска 2026-10-28 выполнены на дереве коммита «Autopilot: команда агентов…» (c8fe7bb); следующий коммит меняет только docs/autopilot (B-004, расписание). На GitHub на момент записи — только 7fe9ae1.",
+  "last_verified_sha": "d2bbafa5f158f1a7f3234303691ee027c816270d",
+  "last_verified_note": "d2bbafa — на GitHub (push 29.10.2026); проверки lint/test/build/браузер выполнены на c8fe7bb, d2bbafa меняет только docs/autopilot.",
   "active_task": null,
   "completed": [
     "FIX-01"
@@ -18,14 +18,12 @@
     "MOTION-01",
     "UX-02",
     "CNT-01",
-    "FIX-05",
-    "push/B-004"
+    "FIX-05"
   ],
   "pending_checks": [
-    "Push в origin/claude/studio-autopilot не выполнен (403). Следующий запуск: проверить, есть ли коммиты автопилота на GitHub; если нет — восстановить из bundle или повторить push.",
     "MOTION-02: подключить остальные критичные запросы кабинета и lazy-чанки, повторить QA",
     "Контрольный запуск в режиме dontAsk после включения разрешений (BLOCKERS B-001)",
-    "Первый запуск облачного расписания — проверить результат в истории сессий"
+    "Первый плановый запуск 30.10.2026 09:42 МСК — проверить коммит и REPORT.md"
   ],
   "next_step": "FIX-02 (имя пользователя в меню кабинета), затем REL-01 (CI без деплоя) и MOTION-03 (полоса у футера со статичным вариантом).",
   "limits": {
@@ -35,10 +33,15 @@
     "TARGET_RUN_MINUTES": 45
   },
   "schedule": {
-    "mechanism": "none",
-    "reason": "push в GitHub отклонён (403, BLOCKERS B-004); параметры для создания — RUNBOOK.md «Расписание»",
+    "mechanism": "claude-code-cloud-scheduled-task",
+    "trigger_id": "trig_01JcqcDzob7QJL9tLyxpJNNr",
+    "name": "PAN TERRA автопилот",
+    "cron": "CRON_TZ=Europe/Moscow 42 9 * * *",
     "timezone": "Europe/Moscow",
-    "planned_cron": "CRON_TZ=Europe/Moscow 42 9 * * *"
+    "target_session": "session_01VqW66d42rvhncjGgQn5pQM",
+    "next_run_at": "2026-10-30T06:42:00Z",
+    "created_at": "2026-10-29T07:03:27Z",
+    "verified": "list_triggers 29.10.2026: одна задача, enabled"
   },
   "last_run": {
     "date": "2026-10-28",
