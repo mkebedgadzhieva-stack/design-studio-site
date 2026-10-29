@@ -4,3 +4,6 @@ dist/
 .env*
 __pycache__/
 *.pyc
+
+# Генерируется tools/motion/build_rig.py (≈0,8 МБ), только для превью
+assets-src/motion/rig/scene-b-lap.svg

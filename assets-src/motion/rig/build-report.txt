@@ -1,0 +1,3 @@
+B cycle: max IK error 0.00px
+B lap: 1288 frames, max IK error 3.69px
+A: max IK error 105.43px {'fl': 35.7, 'fr': 105.4}
