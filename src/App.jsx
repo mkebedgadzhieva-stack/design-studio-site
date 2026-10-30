@@ -34,7 +34,6 @@ import Payouts from "./pages/cabinet/Payouts.jsx";
 
 import Project from "./pages/Project.jsx";
 import ContactUs from "./components/ContactUs";
-import Cabinet from "./pages/Cabinet.tsx"; // если не используешь — можешь удалить импорт
 import Offer from "./pages/Offer.jsx";
 import Store from "./pages/Store.jsx";
 import FooterPanther from "./motion/FooterPanther.jsx";

@@ -1,12 +1,26 @@
-# React + Vite
+# PAN TERRA — сайт дизайн-студии
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Публичный сайт студии PAN TERRA (брендинг, айдентика, упаковка, полиграфия) и личные кабинеты: «Студия» и «Заказчик / партнёр».
 
-Currently, two official plugins are available:
+**Стек:** Vite 7, React 19, React Router 7, Tailwind CSS 4, Supabase. Node 22.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Запуск
+```bash
+npm install
+npm run dev      # http://localhost:5173
+```
+Ключи Supabase — в `.env.local` (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`), файл не коммитится.
 
-## Expanding the ESLint configuration
+## Проверки
+```bash
+npm run lint
+npm test
+npm run build
+```
+Те же проверки запускаются на GitHub при каждой отправке (`.github/workflows/checks.yml`, без публикации).
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Где что лежит
+- `CLAUDE.md` — правила проекта; `PROJECT_STATUS.md` — состояние и изменения.
+- `docs/autopilot/` — очередь задач, состояние, решения, блокеры, инструкция (RUNBOOK).
+- `docs/motion/` — спецификация, раскадровка и проверки анимации пантеры.
+- `src/ROUTES.md` — карта маршрутов и чеклист.
