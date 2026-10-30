@@ -9,8 +9,6 @@ import Publishing from "./pages/services/Publishing.jsx";
 import Packaging from "./pages/services/Packaging.jsx";
 import Extras from "./pages/services/Extras.jsx";
 import ServiceDetail from "./pages/services/ServiceDetail.jsx";
-import ProjectsAdmin from "./pages/cabinet/ProjectsAdmin.jsx";
-import PlannerBoard from "./pages/cabinet/PlannerBoard.jsx";
 
 import {
   BrowserRouter,
@@ -23,16 +21,29 @@ import {
 } from "react-router-dom";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 
-import AuthGate from "./features/auth/AuthGate.jsx";
-import AuthCallback from "./features/auth/AuthCallback.jsx";
+import RouteLoader from "./motion/RouteLoader.jsx";
+import LoadErrorBoundary from "./components/LoadErrorBoundary.jsx";
 
-import CabinetLayout from "./cabinet/CabinetLayout.jsx";
-import PartnerDashboard from "./pages/cabinet/PartnerDashboard.jsx";
-import ClientDashboard from "./pages/cabinet/ClientDashboard.jsx";
-import Commissions from "./pages/cabinet/Commissions.jsx";
-import Payouts from "./pages/cabinet/Payouts.jsx";
+// Кабинет и вход грузятся отдельными частями (REL-02): посетитель публичных
+// страниц не скачивает редактор, доску, клиент базы и т. п.
+const AuthGate = lazy(() => import("./features/auth/AuthGate.jsx"));
+const AuthCallback = lazy(() => import("./features/auth/AuthCallback.jsx"));
+const CabinetLayout = lazy(() => import("./cabinet/CabinetLayout.jsx"));
+const PartnerDashboard = lazy(() => import("./pages/cabinet/PartnerDashboard.jsx"));
+const ClientDashboard = lazy(() => import("./pages/cabinet/ClientDashboard.jsx"));
+const Commissions = lazy(() => import("./pages/cabinet/Commissions.jsx"));
+const Payouts = lazy(() => import("./pages/cabinet/Payouts.jsx"));
+const ProjectsAdmin = lazy(() => import("./pages/cabinet/ProjectsAdmin.jsx"));
+const PlannerBoard = lazy(() => import("./pages/cabinet/PlannerBoard.jsx"));
+const Project = lazy(() => import("./pages/Project.jsx"));
 
-import Project from "./pages/Project.jsx";
+function Lazy({ children, label }) {
+  return (
+    <LoadErrorBoundary>
+      <Suspense fallback={<RouteLoader label={label} />}>{children}</Suspense>
+    </LoadErrorBoundary>
+  );
+}
 import ContactUs from "./components/ContactUs";
 import Offer from "./pages/Offer.jsx";
 import Store from "./pages/Store.jsx";
@@ -516,17 +527,19 @@ export default function App() {
           <Route
             path="/cabinet"
             element={
-              <AuthGate>
-                <CabinetLayout />
-              </AuthGate>
+              <Lazy label="Загружаем кабинет…">
+                <AuthGate>
+                  <CabinetLayout />
+                </AuthGate>
+              </Lazy>
             }
           >
-            <Route index element={<ClientDashboard />} />
-            <Route path="commissions" element={<Commissions />} />
-            <Route path="payouts" element={<Payouts />} />
-<Route path="projects" element={<ProjectsAdmin />} />
-            <Route path="projects/:id" element={<Project />} />
-<Route path="planner" element={<PlannerBoard />} />
+            <Route index element={<Lazy><ClientDashboard /></Lazy>} />
+            <Route path="commissions" element={<Lazy><Commissions /></Lazy>} />
+            <Route path="payouts" element={<Lazy><Payouts /></Lazy>} />
+            <Route path="projects" element={<Lazy><ProjectsAdmin /></Lazy>} />
+            <Route path="projects/:id" element={<Lazy><Project /></Lazy>} />
+            <Route path="planner" element={<Lazy><PlannerBoard /></Lazy>} />
           </Route>
 
           {MotionPreview && (
@@ -544,7 +557,7 @@ export default function App() {
         </Route>
 
         {/* OAuth callback (может быть снаружи оболочки) */}
-        <Route path="/auth/callback" element={<AuthCallback />} />
+        <Route path="/auth/callback" element={<Lazy label="Выполняем вход…"><AuthCallback /></Lazy>} />
       </Routes>
     </Router>
   );

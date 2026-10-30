@@ -37,6 +37,11 @@ _Обновлено: 28.10.2026. Ветка `claude/studio-autopilot`. Акту�
 `src/App.jsx`, `src/cabinet/CabinetLayout.jsx`, `src/components/ProjectModal.jsx`, `src/features/auth/AuthGate.jsx`, `src/pages/cabinet/ProjectsAdmin.jsx`, удалён `public/textures/paper.jpg`, новые `public/logo.svg`, `src/pages/cabinet/ClientDashboard.jsx`.
 
 ## Изменения, внесённые Claude
+30.10.2026 (плановый запуск):
+- CLN-01: удалены мусорные и дублирующие файлы, README проекта.
+- REL-02: кабинет грузится отдельной частью — публичные страницы в 3 раза легче; ошибка загрузки показывает «Повторить».
+- Обнаружено: проект Supabase снова приостановлен (INACTIVE) — кабинет не работает до восстановления.
+
 29.10.2026:
 - FIX-02: в меню кабинета вместо жёстко прописанного «Марьям» — имя вошедшего пользователя (или e-mail), `src/lib/userDisplay.js`.
 - REL-01: `.github/workflows/checks.yml` — lint, тесты, сборка на GitHub (без деплоя).
