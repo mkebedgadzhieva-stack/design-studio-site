@@ -37,6 +37,10 @@ _Обновлено: 28.10.2026. Ветка `claude/studio-autopilot`. Акту�
 `src/App.jsx`, `src/cabinet/CabinetLayout.jsx`, `src/components/ProjectModal.jsx`, `src/features/auth/AuthGate.jsx`, `src/pages/cabinet/ProjectsAdmin.jsx`, удалён `public/textures/paper.jpg`, новые `public/logo.svg`, `src/pages/cabinet/ClientDashboard.jsx`.
 
 ## Изменения, внесённые Claude
+31.10.2026 (плановый запуск):
+- UX-04: меню кабинета начинается под шапкой, логотип не перекрыт.
+- Предложения на выбор: мобильное меню и пантера на первом экране — `docs/proposals/2026-10-31/`.
+
 30.10.2026 (плановый запуск):
 - CLN-01: удалены мусорные и дублирующие файлы, README проекта.
 - REL-02: кабинет грузится отдельной частью — публичные страницы в 3 раза легче; ошибка загрузки показывает «Повторить».

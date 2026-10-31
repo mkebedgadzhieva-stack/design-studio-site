@@ -9,16 +9,19 @@
   "last_verified_note": "d2bbafa — на GitHub (push 29.10.2026); проверки lint/test/build/браузер выполнены на c8fe7bb, d2bbafa меняет только docs/autopilot.",
   "active_task": null,
   "completed": [
+    "CLN-01",
     "FIX-01",
     "FIX-02",
     "REL-01",
+    "REL-02",
     "UX-03",
-    "UX-05",
-    "CLN-01",
-    "REL-02"
+    "UX-04",
+    "UX-05"
   ],
   "in_review": [
-    "MOTION-02"
+    "CNT-02 (ждёт выбора)",
+    "MOTION-02",
+    "UX-01 (ждёт выбора)"
   ],
   "blocked": [
     "CNT-01",
@@ -33,7 +36,7 @@
     "Контрольный запуск в режиме dontAsk после включения разрешений (BLOCKERS B-001)",
     "Первый плановый запуск 30.10.2026 09:42 МСК — проверить коммит и REPORT.md"
   ],
-  "next_step": "Ждём от Марьям: восстановить Supabase (B-005), оценку превью пантеры и рисунки (B-002), материалы. Без них: UX-04 и UX-01 — подготовить предложения (product-designer), MOB-01 — каркас приложения.",
+  "next_step": "Ждём от Марьям: выбор меню A/B и пантеры A/B (docs/proposals/2026-10-31), восстановление Supabase (B-005), решение по рисункам пантеры (B-002), материалы. Без них: MOB-01 (каркас приложения, mock с плашкой).",
   "limits": {
     "MAX_CONCURRENT_AGENTS": 2,
     "MAX_TASKS_PER_RUN": 3,
@@ -52,16 +55,17 @@
     "verified": "list_triggers 29.10.2026: одна задача, enabled"
   },
   "last_run": {
-    "date": "2026-10-30",
+    "date": "2026-10-31",
     "kind": "плановый запуск trig_01JcqcDzob7QJL9tLyxpJNNr (09:42 МСК)",
     "tasks": [
-      "CLN-01",
-      "REL-02"
+      "UX-04",
+      "UX-01 (предложение)",
+      "CNT-02 (предложение)"
     ],
     "blocked": [
-      "SEC-01: Supabase INACTIVE (B-005)"
+      "SEC-01: Supabase INACTIVE (B-005), проверено 31.10"
     ],
-    "checks": "lint 0; npm test 12/12; build ок (основной файл 298 КБ); браузер 6/6 (production-сборка)"
+    "checks": "lint 0; npm test 12/12; build ок; браузер UX-04 10/10"
   },
   "in_progress": [
     "MOTION-03"
