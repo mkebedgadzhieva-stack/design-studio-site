@@ -229,6 +229,18 @@ useEffect(() => {
   };
 }, [location.pathname]);
 
+  // Высота шапки — в CSS-переменную: меню кабинета начинается под шапкой (UX-04).
+  useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+    const apply = () =>
+      document.documentElement.style.setProperty("--pt-header-h", `${header.offsetHeight}px`);
+    apply();
+    const observer = new ResizeObserver(apply);
+    observer.observe(header);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="min-h-screen text-gray-900" style={{ fontFamily: "var(--font-body)" }}>
       <header

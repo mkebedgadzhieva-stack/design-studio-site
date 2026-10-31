@@ -266,7 +266,7 @@ export default function CabinetLayout() {
           zIndex: 100,
 
           left: 0,
-          top: 0,
+          top: "var(--pt-header-h, 0px)", // под шапкой сайта, не поверх неё
           bottom: 0,
 
           width: expanded ? 252 : 68,
