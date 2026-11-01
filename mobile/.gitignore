@@ -45,3 +45,6 @@ yarn-error.*
 .env.*
 !.env.example
 dist-*/
+
+# Настройки Claude от шаблона Expo не храним: включение плагинов — решение Марьям
+.claude/
