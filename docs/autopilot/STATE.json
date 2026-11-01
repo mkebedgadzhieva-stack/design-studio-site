@@ -12,6 +12,7 @@
     "CLN-01",
     "FIX-01",
     "FIX-02",
+    "MOB-01",
     "REL-01",
     "REL-02",
     "UX-03",
@@ -36,7 +37,7 @@
     "Контрольный запуск в режиме dontAsk после включения разрешений (BLOCKERS B-001)",
     "Первый плановый запуск 30.10.2026 09:42 МСК — проверить коммит и REPORT.md"
   ],
-  "next_step": "Ждём от Марьям: выбор меню A/B и пантеры A/B (docs/proposals/2026-10-31), восстановление Supabase (B-005), решение по рисункам пантеры (B-002), материалы. Без них: MOB-01 (каркас приложения, mock с плашкой).",
+  "next_step": "Ждём от Марьям: выбор меню и пантеры (docs/proposals/2026-10-31), Supabase Restore (B-005), рисунки пантеры (B-002), материалы. Без них: MOB-02 (экран «Файлы и правки» — только интерфейс и демо, без хранилища до SEC-01) или CI для mobile (тесты + export web).",
   "limits": {
     "MAX_CONCURRENT_AGENTS": 2,
     "MAX_TASKS_PER_RUN": 3,
@@ -55,17 +56,15 @@
     "verified": "list_triggers 29.10.2026: одна задача, enabled"
   },
   "last_run": {
-    "date": "2026-10-31",
+    "date": "2026-11-01",
     "kind": "плановый запуск trig_01JcqcDzob7QJL9tLyxpJNNr (09:42 МСК)",
     "tasks": [
-      "UX-04",
-      "UX-01 (предложение)",
-      "CNT-02 (предложение)"
+      "MOB-01"
     ],
     "blocked": [
-      "SEC-01: Supabase INACTIVE (B-005), проверено 31.10"
+      "SEC-01: Supabase INACTIVE (B-005), проверено 01.11"
     ],
-    "checks": "lint 0; npm test 12/12; build ок; браузер UX-04 10/10"
+    "checks": "сайт: lint 0, test 12/12, build ок; приложение: test 4/4, expo export web ок, браузер 14/14 (только веб)"
   },
   "in_progress": [
     "MOTION-03"
