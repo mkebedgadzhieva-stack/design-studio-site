@@ -155,5 +155,6 @@
 ### REL-03 — Проверки GitHub для мобильного приложения
 - **Проблема:** CI проверял только сайт; приложение `mobile/` можно было сломать незаметно.
 - **Польза:** каждая отправка в ветку проверяет и приложение.
-- **Приоритет:** P2 · **Статус:** in_review (02.11.2026: job `mobile` в `.github/workflows/checks.yml` — `npm ci`, `npm test`, `expo export --platform web` с `EXPO_OFFLINE=1`; локально с чистой установки — зелёный; результат на GitHub — проверить следующим запуском) · **Исполнитель:** координатор
+- **Приоритет:** P2 · **Статус:** done (02.11.2026) · **Исполнитель:** координатор
+- **Сделано:** job `mobile` в `.github/workflows/checks.yml` (`npm ci`, `npm test`, `expo export --platform web`, `EXPO_OFFLINE=1`); прогон на GitHub для eaeac6d — success (jobs `checks` и `mobile`): https://github.com/mkebedgadzhieva-stack/design-studio-site/actions/runs/41401874749
 - **Критерии приёмки:** job `mobile` зелёный на GitHub; ничего не публикует.

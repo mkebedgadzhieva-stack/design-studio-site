@@ -5,8 +5,8 @@
   "integration_branch": "claude/studio-autopilot",
   "repository": "mkebedgadzhieva-stack/design-studio-site",
   "base_sha": "7fe9ae15da804c6f0d665ee036462db334f97d67",
-  "last_verified_sha": "d2bbafa5f158f1a7f3234303691ee027c816270d",
-  "last_verified_note": "d2bbafa — на GitHub (push 29.10.2026); проверки lint/test/build/браузер выполнены на c8fe7bb, d2bbafa меняет только docs/autopilot.",
+  "last_verified_sha": "eaeac6d88fbe1eab2124ca853efbfe4cc5507720",
+  "last_verified_note": "eaeac6d: CI на GitHub зелёный (checks + mobile), 02.11.2026.",
   "active_task": null,
   "completed": [
     "CLN-01",
@@ -15,6 +15,7 @@
     "MOB-01",
     "REL-01",
     "REL-02",
+    "REL-03",
     "UX-03",
     "UX-04",
     "UX-05"
@@ -22,7 +23,6 @@
   "in_review": [
     "CNT-02 (ждёт выбора)",
     "MOTION-02",
-    "REL-03",
     "UX-01 (ждёт выбора)"
   ],
   "blocked": [
@@ -38,7 +38,7 @@
     "Контрольный запуск в режиме dontAsk после включения разрешений (BLOCKERS B-001)",
     "Первый плановый запуск 30.10.2026 09:42 МСК — проверить коммит и REPORT.md"
   ],
-  "next_step": "Проверить прогон job mobile на GitHub (REL-03). Остальная очередь ждёт Марьям: Supabase Restore (B-005), выбор меню/пантеры, рисунки пантеры, материалы, спецификация FIX-03 (что показывать заказчику, поля оплаты). Независимых задач почти не осталось — запуски будут короткими.",
+  "next_step": "Очередь ждёт Марьям: Supabase Restore (B-005), выбор меню/пантеры (docs/proposals/2026-10-31), рисунки пантеры (B-002), материалы, решение по FIX-03 (что показывать заказчику, поля оплаты). Независимых задач нет — следующий запуск без её ответа проверит состояние и завершится коротким статусом.",
   "limits": {
     "MAX_CONCURRENT_AGENTS": 2,
     "MAX_TASKS_PER_RUN": 3,
