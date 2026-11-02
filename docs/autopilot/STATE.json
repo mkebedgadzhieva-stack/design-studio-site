@@ -22,6 +22,7 @@
   "in_review": [
     "CNT-02 (ждёт выбора)",
     "MOTION-02",
+    "REL-03",
     "UX-01 (ждёт выбора)"
   ],
   "blocked": [
@@ -37,7 +38,7 @@
     "Контрольный запуск в режиме dontAsk после включения разрешений (BLOCKERS B-001)",
     "Первый плановый запуск 30.10.2026 09:42 МСК — проверить коммит и REPORT.md"
   ],
-  "next_step": "Ждём от Марьям: выбор меню и пантеры (docs/proposals/2026-10-31), Supabase Restore (B-005), рисунки пантеры (B-002), материалы. Без них: MOB-02 (экран «Файлы и правки» — только интерфейс и демо, без хранилища до SEC-01) или CI для mobile (тесты + export web).",
+  "next_step": "Проверить прогон job mobile на GitHub (REL-03). Остальная очередь ждёт Марьям: Supabase Restore (B-005), выбор меню/пантеры, рисунки пантеры, материалы, спецификация FIX-03 (что показывать заказчику, поля оплаты). Независимых задач почти не осталось — запуски будут короткими.",
   "limits": {
     "MAX_CONCURRENT_AGENTS": 2,
     "MAX_TASKS_PER_RUN": 3,
@@ -56,15 +57,16 @@
     "verified": "list_triggers 29.10.2026: одна задача, enabled"
   },
   "last_run": {
-    "date": "2026-11-01",
+    "date": "2026-11-02",
     "kind": "плановый запуск trig_01JcqcDzob7QJL9tLyxpJNNr (09:42 МСК)",
     "tasks": [
-      "MOB-01"
+      "REL-03"
     ],
     "blocked": [
-      "SEC-01: Supabase INACTIVE (B-005), проверено 01.11"
+      "SEC-01: Supabase INACTIVE (B-005), проверено 02.11",
+      "FIX-03: нужна спецификация и решение Марьям по оплате"
     ],
-    "checks": "сайт: lint 0, test 12/12, build ок; приложение: test 4/4, expo export web ок, браузер 14/14 (только веб)"
+    "checks": "сайт: lint 0, test 12/12, build ок; mobile: npm ci, test 4/4, expo export web ок"
   },
   "in_progress": [
     "MOTION-03"
