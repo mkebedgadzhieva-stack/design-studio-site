@@ -57,16 +57,14 @@
     "verified": "list_triggers 29.10.2026: одна задача, enabled"
   },
   "last_run": {
-    "date": "2026-11-02",
+    "date": "2026-11-03",
     "kind": "плановый запуск trig_01JcqcDzob7QJL9tLyxpJNNr (09:42 МСК)",
-    "tasks": [
-      "REL-03"
-    ],
+    "tasks": [],
+    "result": "независимых задач нет; изменений продукта нет",
     "blocked": [
-      "SEC-01: Supabase INACTIVE (B-005), проверено 02.11",
-      "FIX-03: нужна спецификация и решение Марьям по оплате"
-    ],
-    "checks": "сайт: lint 0, test 12/12, build ок; mobile: npm ci, test 4/4, expo export web ок"
+      "Supabase INACTIVE (B-005), проверено 03.11",
+      "выбор меню/пантеры, рисунки пантеры, материалы, FIX-03 — ждут Марьям"
+    ]
   },
   "in_progress": [
     "MOTION-03"
